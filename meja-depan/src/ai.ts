@@ -183,7 +183,8 @@ export async function panggilAi(env: EnvAi, penghitung: Penghitung, data: Kirima
     );
     return { penyedia: penyedia === 'claude' ? k.modelClaude : k.modelWorkersAi, ...periksaHasil(bacaJson(teks), dasar) };
   } catch (e) {
-    console.error('AI gagal; memakai hasil aturan:', String(e));
+    // Hanya jenis galat yang dicatat: pesan galat layanan luar bisa mengutip masukan klien.
+    console.error('AI gagal; memakai hasil aturan:', e instanceof Error ? e.name : 'galat');
     return null;
   }
 }

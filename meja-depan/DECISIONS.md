@@ -99,21 +99,43 @@ harus didaftarkan dengan `mufuyumoku@gmail.com`. Ini cukup karena surel hanya
 untuk pemilik. Kalau kelak punya domain sendiri, alamat pengirim bisa diganti
 di konfigurasi.
 
-## D10 — Isi catatan privasi (perlu persetujuan pemilik)
+## D10 — Isi catatan privasi (diperbarui 2026-10-24)
 
-Catatan privasi di layar ringkasan menyebut:
+Versi awal menjanjikan penghapusan data paling lambat 90 hari. Pemilik tidak
+mau janji yang menuntut penghapusan manual, jadi kalimat itu diganti. Catatan
+privasi sekarang (tiga bahasa, `src/lib/teks-titip.ts` → `privasi`) memuat:
 
-- data yang dikirim: jawaban, nama, dan kontak;
-- tujuannya: untuk membalas;
-- formulir/worker tidak menyimpan data; data diteruskan ke Telegram dan surel
-  pemilik;
-- data **dihapus paling lambat 90 hari setelah percakapan selesai**, atau lebih
-  cepat bila diminta.
+- yang dikirim hanya jawaban di formulir, termasuk nama dan kontak;
+- jawaban **hanya dipakai untuk menghubungi klien dan menyiapkan penawaran,
+  dan tidak dibagikan ke pihak lain** (kalimat dari pemilik);
+- formulir tidak menyimpan jawaban; jawaban langsung diantar ke Telegram dan
+  surel Pyonkuro;
+- layanan yang mengantarkan: Cloudflare (termasuk Turnstile dan AI yang
+  merapikan jawaban tanpa nama dan kontak), Telegram, dan Resend;
+- tanpa pelacak atau analitik.
 
-Angka 90 hari mengikuti bawaan SPEC §4. Ini janji yang harus ditepati pemilik
-secara manual di Telegram dan surel. Kalau tidak cocok, ubah kalimatnya di
-`src/lib/teks-titip.ts` (`privasi`). Resend juga menyimpan log surel terkirim
-di dasbornya untuk sementara waktu.
+Layanan pengantar sengaja disebut. Tanpa itu, kalimat "tidak dibagikan ke
+pihak lain" bisa terbaca seolah tidak ada layanan luar yang memproses
+jawaban, padahal jawaban melewati Cloudflare, Telegram, dan Resend. Layanan
+itu bertindak sebagai pengantar atas nama Pyonkuro, bukan penerima untuk
+keperluan mereka sendiri.
+
+Yang benar-benar disimpan di sisi worker (dicek ulang, ada tesnya):
+
+- Isi kiriman tidak disimpan sama sekali. Jawaban hanya ada di memori selama
+  satu permintaan, untuk menyusun dan mengirim laporan.
+- Durable Object `Penghitung` hanya menyimpan:
+  - hash IP (dipotong) + cap waktu untuk batas kiriman;
+  - hitungan AI per tanggal.
+  Keduanya dibuang alarm harian setelah lebih dari sehari (D14).
+- Log permintaan Cloudflare dimatikan (D8). Log galat hanya mencatat jenis
+  galat. Log galat AI kini sengaja tidak mencetak pesan galat, karena pesan
+  dari layanan luar bisa mengutip masukan.
+
+Salinan laporan yang sampai di Telegram dan surel pemilik adalah hasil
+pengantaran itu sendiri. Simpanan di sana mengikuti kebiasaan pemilik
+memakai Telegram dan surel, tanpa janji batas waktu. Resend menyimpan log
+surel terkirim di dasbornya untuk sementara waktu, sesuai kebijakan Resend.
 
 ## D11 — Satu pertanyaan per layar, termasuk pertanyaan lanjutan
 

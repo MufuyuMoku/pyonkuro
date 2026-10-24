@@ -2,12 +2,13 @@
 
 | Milestone | Status | Branch |
 | --- | --- | --- |
-| M0 — Kerangka | Selesai, menunggu review PR | `claude/meja-depan-m0` |
-| M1 — Formulir bertahap | Selesai, menunggu review PR | `claude/meja-depan-m1` |
-| M2 — Pengiriman laporan | Selesai, menunggu review PR | `claude/meja-depan-m2` |
-| M3 — Tingkat & draf | Selesai, menunggu review PR | `claude/meja-depan-m3` |
-| M4 — Lapisan AI | Selesai, menunggu review PR | `claude/meja-depan-m4` |
-| M5 — Pengerasan | Selesai, menunggu review PR | `claude/meja-depan-m5` |
+| M0 — Kerangka | Digabung ke `main` | `claude/meja-depan-m0` |
+| M1 — Formulir bertahap | Digabung ke `main` | `claude/meja-depan-m1` |
+| M2 — Pengiriman laporan | Digabung ke `main` | `claude/meja-depan-m2` |
+| M3 — Tingkat & draf | Digabung ke `main` | `claude/meja-depan-m3` |
+| M4 — Lapisan AI | Digabung ke `main` | `claude/meja-depan-m4` |
+| M5 — Pengerasan | Digabung ke `main` | `claude/meja-depan-m5` |
+| Aktivasi | Formulir aktif, catatan privasi baru | `claude/meja-depan-aktif` |
 
 ## M5 — Pengerasan
 
@@ -41,22 +42,23 @@
     dan AI (§10);
   - panduan saat ada masalah (§12).
 
-## Ringkasan: yang menunggu pemilik
+## Aktivasi
 
-1. Review dan gabungkan PR M0–M5 **berurutan**.
-2. Repository secrets:
-   - `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `TELEGRAM_BOT_TOKEN`,
-     `TELEGRAM_CHAT_ID`, `TURNSTILE_SECRET_KEY`;
-   - `RESEND_API_KEY` (disarankan);
-   - `ANTHROPIC_API_KEY` (opsional).
-3. Subdomain workers.dev di akun Cloudflare (README §3.2), dan hostname
-   `mufuyumoku.github.io` di widget Turnstile (§5).
-4. Setelah worker terpasang: isi `alamatWorker` di `konfigurasi/umum.json`,
-   lalu kirim satu formulir percobaan. Ini juga uji pertama Telegram, Resend,
-   Turnstile, dan Workers AI sungguhan, yang tidak bisa dilakukan dari
-   lingkungan pengembangan.
-5. Setujui atau ubah janji masa simpan 90 hari di catatan privasi (D10).
-6. Opsional: harga patokan, kata-kata draf, dan pertanyaan.
+- Worker terpasang di `https://meja-depan.mufuyumoku.workers.dev`. Pemilik
+  sudah memeriksa `/sehat`: `telegram`, `turnstile`, dan `surel` semuanya
+  `true`.
+- `alamatWorker` diisi, sehingga formulir aktif, tombol "Titip ide" muncul di
+  bagian Jasa dan Kontak, dan halaman Titip Ide bisa diindeks.
+- Catatan privasi tidak lagi menjanjikan penghapusan manual (D10). Ada tes
+  yang memastikan worker tidak menyimpan jawaban klien. Log galat AI hanya
+  mencatat jenis galat.
+
+## Yang tersisa untuk pemilik
+
+1. Kirim satu formulir percobaan dari HP. Ini uji pertama Telegram, Resend,
+   Turnstile, dan Workers AI sungguhan. Periksa juga mutu ringkasan dan draf
+   dari AI.
+2. Opsional: harga patokan, kata-kata draf, dan pertanyaan.
 
 ## M4 — Lapisan AI
 

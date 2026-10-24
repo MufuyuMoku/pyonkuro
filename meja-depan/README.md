@@ -19,8 +19,9 @@ adalah sebuah **worker** kecil di Cloudflare (folder ini). Spesifikasi lengkap:
 4. Isi `alamatWorker` di `konfigurasi/umum.json` dan commit (§7).
 5. Kirim satu formulir percobaan dari HP. Laporan dan draf harus masuk ke
    Telegram, salinannya ke surel.
-6. Opsional: isi harga patokan (§9), sesuaikan pertanyaan (§11), dan periksa
-   kata-kata catatan privasi (`src/lib/teks-titip.ts`, `privasi`).
+6. Opsional: isi harga patokan (§9) dan sesuaikan pertanyaan (§11). Catatan
+   privasi ada di `src/lib/teks-titip.ts` (`privasi`); dasar isinya dijelaskan
+   di `DECISIONS.md` D10.
 
 ---
 
