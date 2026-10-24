@@ -189,3 +189,34 @@ sama.
   kasih". Galat 502 hanya bila keduanya gagal.
 - Galat saluran dicatat dengan `console.error` tanpa isi kiriman. Log hanya
   terlihat lewat `wrangler tail`, karena observability dimatikan (D8).
+
+## D17 — Tafsiran tabel tingkat SPEC §7
+
+Tabel SPEC hanya menyebut ciri tiap tingkat. Penerapannya:
+
+- **Besar** bila ada transaksi/pesanan, pembayaran online, atau beberapa peran
+  pengguna. Jenis "Toko online & transaksi" selalu membawa ciri transaksi,
+  jadi selalu Besar.
+- **Sedang** bila ada login, isi yang diubah sendiri lewat panel, data yang
+  dipakai bersama, atau **lebih dari 3 halaman**. Tabel menyebut Kecil =
+  "1–3 halaman", jadi situs 4 halaman ke atas tidak lagi Kecil.
+- **Kecil** sebagai bawaan bila tidak ada ciri di atas.
+- Bila ada jawaban "belum tahu" atau jenisnya "lainnya", perkiraan tetap
+  diberikan tetapi ditandai **kasar**.
+
+Semua pemetaan jawaban → ciri → tingkat ada di `konfigurasi/tingkat.json` dan
+bisa diubah tanpa menyentuh kode.
+
+## D18 — Draf sebagai pesan Telegram kedua
+
+- Draf dikirim sebagai pesan teks polos tersendiri, supaya bisa disalin utuh
+  dengan sekali tekan-tahan.
+- Bila nomor WhatsApp klien pasti (D12), pesan draf diberi tombol yang
+  membuka `wa.me/<nomor>?text=<draf>`. Pemilik tinggal mengganti
+  "[isi harga]" lalu mengirim. Tombol dilewati bila URL-nya lebih dari 2.000
+  karakter.
+- Laporan (pesan pertama) yang menentukan berhasil-tidaknya Telegram. Kalau
+  pesan draf gagal, laporan yang sudah sampai tidak dianggap gagal; drafnya
+  tetap ada di surel.
+- Bila Telegram menolak format atau tombol (400), pesan dikirim ulang sebagai
+  teks polos tanpa tombol.

@@ -1,0 +1,29 @@
+{
+  "hargaPatokan": { "kecil": "", "sedang": "", "besar": "" },
+  "tingkat": [
+    { "id": "besar", "nama": "Besar", "jikaAda": ["transaksi", "pembayaran", "banyakPeran"] },
+    { "id": "sedang", "nama": "Sedang", "jikaAda": ["dataDiubah", "login", "dataBersama", "banyakHalaman"] },
+    { "id": "kecil", "nama": "Kecil", "jikaAda": [] }
+  ],
+  "labelCiri": {
+    "transaksi": "ada pesanan/transaksi",
+    "pembayaran": "ada pembayaran online",
+    "banyakPeran": "beberapa peran pengguna",
+    "dataDiubah": "isi diubah sendiri lewat panel",
+    "login": "ada login",
+    "dataBersama": "data dipakai bersama beberapa orang",
+    "banyakHalaman": "lebih dari 3 halaman"
+  },
+  "ciriJenis": {
+    "toko": ["transaksi", "dataDiubah", "login"]
+  },
+  "ciriJawaban": {
+    "halaman": { "4-10": ["banyakHalaman"], "lebih-10": ["banyakHalaman"] },
+    "ubahIsi": { "sendiri": ["dataDiubah", "login"] },
+    "login": { "ya": ["login"] },
+    "bayar": { "ya": ["pembayaran"] },
+    "pengurus": { "tim": ["banyakPeran"] },
+    "pengguna": { "beberapa": ["dataBersama"], "peran": ["banyakPeran", "login"] },
+    "akun": { "ya": ["login"] }
+  }
+}

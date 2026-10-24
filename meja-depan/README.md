@@ -127,3 +127,26 @@ cp .env.example .dev.vars   # lalu isi nilainya di .dev.vars (berkas ini diabaik
 npm run dev                 # worker jalan di http://localhost:8787
 npm test                    # menjalankan tes
 ```
+
+## 9. Mengubah harga patokan, aturan tingkat, dan draf
+
+Semua ada di folder `konfigurasi/`. Ubah berkasnya di GitHub (ikon pensil),
+lalu commit ke `main`. Worker terpasang ulang otomatis.
+
+- **Harga patokan** — `konfigurasi/tingkat.json`, bagian `hargaPatokan`.
+  Contoh: `"kecil": "Rp1.500.000"`. Biarkan `""` supaya draf menulis
+  "[isi harga]".
+- **Aturan tingkat** — `konfigurasi/tingkat.json`:
+  - `ciriJawaban` memetakan jawaban ke ciri. Contoh: jawaban `"ya"` pada
+    pertanyaan `login` memberi ciri `"login"`.
+  - `tingkat` memetakan ciri ke tingkat. Urutannya dari atas: tingkat pertama
+    yang cirinya cocok yang dipakai. Tingkat terakhir harus punya
+    `"jikaAda": []` sebagai bawaan.
+- **Kata-kata draf penawaran** — `konfigurasi/draf.json`, bagian `draf` (tiga
+  bahasa). Poin "apa yang dibuat" ada di bagian `poin`.
+- **Daftar "hal yang belum jelas"** — `konfigurasi/draf.json`, bagian
+  `belumJelas`.
+
+Tes otomatis memeriksa bahwa konfigurasi tetap konsisten, mis. tidak merujuk
+pertanyaan yang tidak ada. Kalau tes di pull request merah setelah mengubah
+konfigurasi, baca pesan galatnya: biasanya ada nama yang salah ketik.
