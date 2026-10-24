@@ -85,8 +85,7 @@ const surel = 'mufuyumoku@gmail.com';
             <h3 class="karya__judul">Onsa <span class="karya__kanji" lang="ja">音叉</span></h3>
             <p class="karya__isi">{t.karya.onsa.isi}</p>
             <div class="karya__kaki">
-              <span class="karya__status">v1.4.0</span>
-              <a class="tautan" href="https://github.com/MufuyuMoku/onsa/releases/tag/v1.4.0" rel="noopener">{t.karya.onsa.aksi}</a>
+              <a class="tautan" href="https://github.com/MufuyuMoku/onsa/releases/latest" rel="noopener">{t.karya.onsa.aksi}</a>
             </div>
           </article>
           <article class="karya__item">
@@ -131,7 +130,10 @@ const surel = 'mufuyumoku@gmail.com';
         <p class="judul-bagian"><svg viewBox="0 0 512 512" aria-hidden="true"><use href="#pyonkuro" /></svg>{t.kontak.label}</p>
         <h2 id="judul-kontak">{t.kontak.judul}</h2>
         <div class="kontak">
-          <p class="surel" id="surel"><a href={`mailto:${surel}`}>{surel}</a></p>
+          <div>
+            <p class="surel" id="surel"><a href={`mailto:${surel}`}>{surel}</a></p>
+            <p class="whatsapp">{t.kontak.whatsapp}: <span>@Mufuyu</span></p>
+          </div>
           <button class="salin" id="salin" type="button"
                   data-salin={t.kontak.salin} data-tersalin={t.kontak.tersalin} data-tekan={t.kontak.tekanSalin}>{t.kontak.salin}</button>
           <dl class="kontak__lain">

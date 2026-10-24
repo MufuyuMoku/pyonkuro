@@ -35,7 +35,7 @@ export type Teks = {
   karya: { label: string; judul: string; pengantar: string; onsa: Karya; saku: Karya; lanjutSebelum: string; lanjutTautan: string; lanjutSesudah: string };
   jasa: { label: string; judul: string; daftar: [Jasa, Jasa, Jasa, Jasa]; harga: string };
   cara: { label: string; judul: string; langkah: [string, string][] };
-  kontak: { label: string; judul: string; salin: string; tersalin: string; tekanSalin: string; github: string; portofolio: string };
+  kontak: { label: string; judul: string; whatsapp: string; salin: string; tersalin: string; tekanSalin: string; github: string; portofolio: string };
   kaki: string;
 };
 
@@ -54,11 +54,11 @@ export const TEKS: Record<Bahasa, Teks> = {
       onsa: {
         jenis: 'Aplikasi desktop · Windows & Linux',
         isi: 'Pemutar musik untuk orang yang menyimpan berkas musiknya sendiri. Strip di bawah jendela menunjukkan jalur yang benar-benar dilewati suara, dari format berkas sampai keluaran.',
-        aksi: 'Unduh rilis',
+        aksi: 'Unduh versi terbaru',
       },
       saku: {
         jenis: 'Situs web · bisa dipasang di HP',
-        isi: 'Pencari peraturan pajak Indonesia yang tetap jalan tanpa internet. Pencariannya berjalan di perangkat, tanpa server. Bukan situs resmi pemerintah.',
+        isi: 'Pencari peraturan pajak Indonesia yang tetap jalan tanpa internet. Dibuat atas permintaan dan sudah dipakai sehari-hari oleh penggunanya. Pencariannya berjalan di perangkat, tanpa server. Bukan situs resmi pemerintah.',
         aksi: 'Buka situsnya',
       },
       lanjutSebelum: 'Karya lain, termasuk yang masih dikerjakan dan karya tulis, ada di ',
@@ -69,12 +69,12 @@ export const TEKS: Record<Bahasa, Teks> = {
       label: 'Jasa',
       judul: 'Yang bisa dibuatkan',
       daftar: [
-        { judul: 'Situs web', isi: 'Profil, katalog, atau alat kecil. Bisa dibuat tetap jalan tanpa internet dan tanpa biaya server.', contoh: 'Contoh: Saku Pajak, portofolio' },
+        { judul: 'Situs web', isi: 'Profil, katalog, atau alat kecil. Bisa berupa situs statis tanpa biaya server, atau dilengkapi database dan panel admin kalau isinya perlu Anda ubah sendiri.', contoh: 'Contoh: Saku Pajak, portofolio' },
+        { judul: 'Toko online & sistem transaksi', isi: 'Katalog, keranjang, checkout, dan pembayaran QRIS, lengkap dengan panel admin untuk mengatur produk, stok, dan pesanan.', contoh: 'Contoh menyusul' },
         { judul: 'Aplikasi desktop', isi: 'Aplikasi Windows dan Linux yang menyimpan data di perangkat sendiri, tanpa akun.', contoh: 'Contoh: Onsa' },
         { judul: 'Aplikasi untuk HP', isi: 'Dimulai dari web yang bisa dipasang di layar utama HP dan dipakai seperti aplikasi.', contoh: 'Contoh: Saku Pajak' },
-        { judul: 'IoT & server kecil', isi: 'Perangkat dan server rumahan dari perangkat keras murah, termasuk backup yang sudah diuji pemulihannya.', contoh: 'Contoh: Project HOME' },
       ],
-      harga: 'Harga mengikuti lingkup pekerjaan. Ceritakan kebutuhannya lewat surel dulu.',
+      harga: 'Harga mengikuti lingkup pekerjaan. Ceritakan kebutuhannya lewat surel atau WhatsApp dulu.',
     },
     cara: {
       label: 'Cara kerja',
@@ -84,11 +84,13 @@ export const TEKS: Record<Bahasa, Teks> = {
         ['Dipecah per tahap', 'Tiap tahap punya batas yang jelas, jadi kemajuannya bisa dilihat dan dicoba.'],
         ['Dicek sebelum diterima', 'Satu tahap baru dianggap selesai kalau perilakunya lulus uji.'],
         ['Diserahkan dengan catatan', 'Hasilnya diserahkan bersama catatan keputusan dan cara memakainya.'],
+        ['Pembayaran & revisi', 'DP dibayar sebelum mulai, pelunasan saat serah terima. Revisi mengikuti lingkup yang sudah disepakati; permintaan di luar itu dibuatkan penawaran tambahan.'],
       ],
     },
     kontak: {
       label: 'Kontak',
       judul: 'Punya ide yang terdengar absurd?',
+      whatsapp: 'WhatsApp',
       salin: 'Salin surel',
       tersalin: 'Tersalin',
       tekanSalin: 'Tekan Ctrl+C',
@@ -112,11 +114,11 @@ export const TEKS: Record<Bahasa, Teks> = {
       onsa: {
         jenis: 'Desktop app · Windows & Linux',
         isi: 'A music player for people who keep their own music files. A strip at the bottom of the window shows the path the sound actually takes, from the file format to the output.',
-        aksi: 'Download the release',
+        aksi: 'Download the latest version',
       },
       saku: {
         jenis: 'Website · installable on phones',
-        isi: 'A search tool for Indonesian tax regulations that keeps working offline. Search runs on your device, with no server. Not an official government site.',
+        isi: 'A search tool for Indonesian tax regulations that keeps working offline. Built on request and used day to day by real users. Search runs on your device, with no server. Not an official government site.',
         aksi: 'Open the site',
       },
       lanjutSebelum: 'More work, including projects in progress and writing, is in ',
@@ -127,12 +129,12 @@ export const TEKS: Record<Bahasa, Teks> = {
       label: 'Services',
       judul: 'What I can build for you',
       daftar: [
-        { judul: 'Websites', isi: 'Profiles, catalogs, or small tools. They can keep working offline and need no server costs.', contoh: 'Examples: Saku Pajak, portfolio' },
+        { judul: 'Websites', isi: 'Profiles, catalogs, or small tools. Either a static site with no server costs, or one with a database and admin panel if you need to update the content yourself.', contoh: 'Examples: Saku Pajak, portfolio' },
+        { judul: 'Online shops & transactions', isi: 'Catalog, cart, checkout, and QRIS payments, plus an admin panel to manage products, stock, and orders.', contoh: 'Examples coming soon' },
         { judul: 'Desktop apps', isi: 'Windows and Linux apps that keep data on your own device, with no account needed.', contoh: 'Example: Onsa' },
         { judul: 'Apps for phones', isi: 'Starting from websites that can be installed on a phone’s home screen and used like an app.', contoh: 'Example: Saku Pajak' },
-        { judul: 'IoT & small servers', isi: 'Home devices and servers built on inexpensive hardware, including backups whose restore has been tested.', contoh: 'Example: Project HOME' },
       ],
-      harga: 'Pricing depends on the scope of the work. Tell me what you need by email first.',
+      harga: 'Pricing depends on the scope of the work. Tell me what you need by email or WhatsApp first.',
     },
     cara: {
       label: 'How I work',
@@ -142,11 +144,13 @@ export const TEKS: Record<Bahasa, Teks> = {
         ['Split into stages', 'Each stage has clear limits, so progress can be seen and tried.'],
         ['Check before accepting', 'A stage only counts as done once its behavior passes the tests.'],
         ['Hand over with notes', 'The result comes with a record of the decisions made and how to use it.'],
+        ['Payment & revisions', 'A deposit before work starts, the balance at handover. Revisions are covered within the agreed scope; anything beyond it gets a separate quote.'],
       ],
     },
     kontak: {
       label: 'Contact',
       judul: 'Got an idea that sounds absurd?',
+      whatsapp: 'WhatsApp',
       salin: 'Copy email',
       tersalin: 'Copied',
       tekanSalin: 'Press Ctrl+C',
@@ -170,11 +174,11 @@ export const TEKS: Record<Bahasa, Teks> = {
       onsa: {
         jenis: 'デスクトップアプリ · Windows & Linux',
         isi: '自分で音楽ファイルを持っている人のための音楽プレーヤー。ウィンドウ下部のストリップに、音が実際に通る経路をファイル形式から出力まで表示します。',
-        aksi: 'リリースをダウンロード',
+        aksi: '最新版をダウンロード',
       },
       saku: {
         jenis: 'ウェブサイト · スマホにインストール可能',
-        isi: 'オフラインでも使えるインドネシアの税法規検索ツール。検索は端末上で動き、サーバーは使いません。政府の公式サイトではありません。',
+        isi: 'オフラインでも使えるインドネシアの税法規検索ツール。依頼を受けて制作し、実際の利用者に日々使われています。検索は端末上で動き、サーバーは使いません。政府の公式サイトではありません。',
         aksi: 'サイトを開く',
       },
       lanjutSebelum: '制作中のものや文章を含むその他の作品は、',
@@ -185,12 +189,12 @@ export const TEKS: Record<Bahasa, Teks> = {
       label: 'サービス',
       judul: '作れるもの',
       daftar: [
-        { judul: 'ウェブサイト', isi: 'プロフィール、カタログ、小さなツールなど。オフラインでも動き、サーバー費用のかからない形にできます。', contoh: '例：Saku Pajak、ポートフォリオ' },
+        { judul: 'ウェブサイト', isi: 'プロフィール、カタログ、小さなツールなど。サーバー費用のかからない静的サイトにも、内容をご自身で更新できるようデータベースと管理画面を備えた形にもできます。', contoh: '例：Saku Pajak、ポートフォリオ' },
+        { judul: 'ネットショップ・決済システム', isi: '商品カタログ、カート、購入手続き、QRIS 決済に加え、商品・在庫・注文を管理する管理画面まで。', contoh: '例：近日公開' },
         { judul: 'デスクトップアプリ', isi: 'データを自分の端末に保存する Windows・Linux 向けアプリ。アカウントは不要です。', contoh: '例：Onsa' },
         { judul: 'スマホ向けアプリ', isi: 'まずはスマホのホーム画面に追加して、アプリのように使えるウェブから。', contoh: '例：Saku Pajak' },
-        { judul: 'IoT・小型サーバー', isi: '安価なハードウェアで作る家庭用の機器やサーバー。復元テスト済みのバックアップも含みます。', contoh: '例：Project HOME' },
       ],
-      harga: '料金は作業範囲によって決まります。まずはメールでご相談ください。',
+      harga: '料金は作業範囲によって決まります。まずはメールか WhatsApp でご相談ください。',
     },
     cara: {
       label: '進め方',
@@ -200,11 +204,13 @@ export const TEKS: Record<Bahasa, Teks> = {
         ['段階に分ける', '各段階の範囲をはっきりさせるので、進み具合を見て試せます。'],
         ['確認してから受け入れる', '動作がテストに合格して、はじめてその段階を完了とします。'],
         ['記録と一緒に納品する', '決めたことの記録と使い方を添えてお渡しします。'],
+        ['お支払いと修正', '着手前に前金、納品時に残金をお支払いください。修正は合意した範囲内で対応し、範囲外のご要望は別途お見積りします。'],
       ],
     },
     kontak: {
       label: 'お問い合わせ',
       judul: '突拍子もないアイデア、ありますか？',
+      whatsapp: 'WhatsApp',
       salin: 'メールをコピー',
       tersalin: 'コピーしました',
       tekanSalin: 'Ctrl+C を押してください',
