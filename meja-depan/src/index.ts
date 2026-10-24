@@ -1,7 +1,7 @@
 // Worker Meja Depan: menerima kiriman formulir Titip Ide, memeriksanya, lalu
 // mengirim laporan ke pemilik lewat Telegram dan surel. Tidak menyimpan kiriman.
 import { validasi } from './formulir';
-import { pesanTelegram, renderPolos, subjekSurel, susunLaporan } from './laporan';
+import { subjekSurel, susunPaket } from './laporan';
 import { Penghitung } from './penghitung';
 import { kirimSurel, kirimTelegram } from './saluran';
 import { cekTurnstile } from './turnstile';
@@ -80,15 +80,15 @@ async function terimaKiriman(req: Request, env: Env, asal: string): Promise<Resp
     return jawab({ ok: false, galat: 'batas' }, 429, asal);
   }
 
-  const laporan = susunLaporan(hasil.data, { kode: kodeAcak(), waktu: new Date() });
+  const paket = susunPaket(hasil.data, { kode: kodeAcak(), waktu: new Date() });
   const [telegram, surel] = await Promise.allSettled([
-    kirimTelegram(env.TELEGRAM_BOT_TOKEN, env.TELEGRAM_CHAT_ID, [pesanTelegram(laporan)]),
+    kirimTelegram(env.TELEGRAM_BOT_TOKEN, env.TELEGRAM_CHAT_ID, paket.pesan),
     env.RESEND_API_KEY
       ? kirimSurel(env.RESEND_API_KEY, {
           dari: UMUM.pengirimSurel,
           ke: UMUM.surelPemilik,
-          subjek: subjekSurel(laporan),
-          teks: renderPolos(laporan, { utuh: true }),
+          subjek: subjekSurel(paket.laporan),
+          teks: paket.surel,
           balasKe: hasil.data.kontakJenis === 'surel' ? hasil.data.kontak : undefined,
         })
       : Promise.reject(new Error('surel tidak diatur')),

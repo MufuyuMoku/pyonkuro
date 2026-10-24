@@ -4,7 +4,9 @@
 // Aturan keamanan (SPEC §10): semua teks dari klien di-escape, dan teks panjang
 // dari klien selalu tampil di dalam kutipan supaya tidak bisa menyamar sebagai
 // bagian laporan (mis. menulis "Tingkat: Kecil" di kolom masalah).
+import { halBelumJelas, hargaPatokan, perkiraTingkat, susunDraf } from './aturan';
 import { bacaWhatsApp, PERTANYAAN, type Kiriman, type KonfigurasiPertanyaan, type Pilihan } from './formulir';
+import type { PesanTelegram } from './saluran';
 
 // Satu baris laporan. `kutipan` = teks bebas dari klien, ditampilkan sebagai kutipan.
 export type Baris = { label?: string; teks: string; kutipan?: boolean; batas?: number };
@@ -41,7 +43,7 @@ export function tanggalWib(d: Date): string {
 // Kartu ringkas dan ringkasan kebutuhan (berbasis aturan, tanpa AI).
 export function susunLaporan(
   data: Kiriman,
-  opsi: { kode: string; waktu: Date; tambahan?: Bagian[] },
+  opsi: { kode: string; waktu: Date; tambahan?: Bagian[]; ringkasanAi?: string[] },
   k: KonfigurasiPertanyaan = PERTANYAAN,
 ): Laporan {
   const jenis = labelPilihan(k.jenis.pilihan, data.jenis);
@@ -67,8 +69,12 @@ export function susunLaporan(
       : [{ label: p.labelLaporan, teks: nilai, kutipan: true, batas: 400 }];
   });
 
+  // Ringkasan dari AI (bila ada) tampil di atas jawaban asli klien, yang tetap disertakan.
+  const ringkasanAi: Bagian[] = opsi.ringkasanAi?.length
+    ? [{ judul: 'Ringkasan kebutuhan (dirapikan AI)', baris: opsi.ringkasanAi.map((t) => ({ teks: `• ${t}` })) }]
+    : [];
   const ringkasan: Bagian = {
-    judul: 'Ringkasan kebutuhan',
+    judul: ringkasanAi.length ? 'Jawaban klien' : 'Ringkasan kebutuhan',
     baris: [
       { label: 'Usaha', teks: data.usaha, kutipan: true, batas: 300 },
       { label: 'Masalah', teks: data.masalah, kutipan: true, batas: 900 },
@@ -77,7 +83,7 @@ export function susunLaporan(
     ],
   };
 
-  return { kode: opsi.kode, waktu: opsi.waktu, data, tautanWa: wa, bagian: [kartu, ringkasan, ...(opsi.tambahan ?? [])] };
+  return { kode: opsi.kode, waktu: opsi.waktu, data, tautanWa: wa, bagian: [kartu, ...ringkasanAi, ringkasan, ...(opsi.tambahan ?? [])] };
 }
 
 // --- Render ----------------------------------------------------------------
@@ -119,8 +125,47 @@ export function subjekSurel(l: Laporan): string {
 }
 
 // Pesan Telegram siap kirim: HTML bila muat, selalu dengan cadangan teks polos.
-export function pesanTelegram(l: Laporan): { html?: string; polos: string; tombolWa: string | null } {
+export function pesanTelegram(l: Laporan): PesanTelegram {
   const html = renderTelegram(l);
   const polos = potong(renderPolos(l, { utuh: false }), BATAS_TELEGRAM);
-  return { ...(html.length <= BATAS_TELEGRAM ? { html } : {}), polos, tombolWa: l.tautanWa };
+  const tombol = l.tautanWa ? { teks: 'Buka chat WhatsApp', url: `https://wa.me/${l.tautanWa}` } : null;
+  return { ...(html.length <= BATAS_TELEGRAM ? { html } : {}), polos, tombol };
+}
+
+// --- Laporan lengkap: tingkat, hal yang belum jelas, dan draf (SPEC §6–§8) ---
+
+const BATAS_URL_TOMBOL = 2000;
+
+export type Paket = { laporan: Laporan; draf: string; pesan: PesanTelegram[]; surel: string };
+
+// Bagian tambahan bisa diganti (mis. oleh lapisan AI); tingkat dan harga selalu dari aturan.
+export function susunPaket(
+  data: Kiriman,
+  opsi: { kode: string; waktu: Date; ringkasanAi?: string[]; belumJelas?: string[]; draf?: string },
+): Paket {
+  const perkiraan = perkiraTingkat(data);
+  const draf = opsi.draf ?? susunDraf(data, perkiraan.id);
+  const belum = opsi.belumJelas ?? halBelumJelas(data);
+  const tambahan: Bagian[] = [
+    {
+      judul: 'Perkiraan tingkat (hanya untuk pemilik)',
+      baris: [
+        { label: perkiraan.nama, teks: perkiraan.kasar ? `${perkiraan.alasan}. Perkiraan kasar: ada jawaban "belum tahu".` : perkiraan.alasan },
+        { label: 'Harga patokan', teks: hargaPatokan(perkiraan.id) },
+      ],
+    },
+    { judul: 'Hal yang belum jelas', baris: belum.length ? belum.map((t) => ({ teks: `• ${t}` })) : [{ teks: '—' }] },
+  ];
+  const laporan = susunLaporan(data, { kode: opsi.kode, waktu: opsi.waktu, tambahan, ringkasanAi: opsi.ringkasanAi });
+
+  const urlDraf = laporan.tautanWa ? `https://wa.me/${laporan.tautanWa}?text=${encodeURIComponent(draf)}` : null;
+  const pesanDraf: PesanTelegram = {
+    polos: draf,
+    tombol: urlDraf && urlDraf.length <= BATAS_URL_TOMBOL ? { teks: 'Kirim draf lewat WhatsApp', url: urlDraf } : null,
+  };
+  const keterangan: Bagian = { baris: [{ teks: 'Draf penawaran ada di pesan berikutnya. Isi harga sebelum dikirim.' }] };
+  const utama = pesanTelegram({ ...laporan, bagian: [...laporan.bagian, keterangan] });
+
+  const surel = [renderPolos(laporan, { utuh: true }), `DRAF PENAWARAN (bahasa formulir klien)\n${draf}`].join('\n\n');
+  return { laporan, draf, pesan: [utama, pesanDraf], surel };
 }

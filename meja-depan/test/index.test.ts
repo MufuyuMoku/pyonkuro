@@ -165,7 +165,7 @@ describe('kiriman', () => {
     jawabResend = () => new Response('err', { status: 500 });
     const res = await kirim(sah());
     expect(res.status).toBe(200);
-    expect(ke('api.telegram.org')).toHaveLength(1);
+    expect(ke('api.telegram.org')).toHaveLength(2);
   });
 
   it('tanpa RESEND_API_KEY: hanya Telegram', async () => {
@@ -193,6 +193,32 @@ describe('kiriman', () => {
     expect(a.body.parse_mode).toBe('HTML');
     expect(b.body.parse_mode).toBeUndefined();
     expect(b.body.text).toContain('> Pesanan lewat chat sering terlewat.');
+  });
+
+  it('laporan memuat tingkat dan hal yang belum jelas; draf dikirim sebagai pesan kedua', async () => {
+    await kirim(sah());
+    const [laporan, draf] = ke('api.telegram.org');
+    expect(laporan.body.text).toContain('<b>PERKIRAAN TINGKAT (HANYA UNTUK PEMILIK)</b>');
+    expect(laporan.body.text).toContain('<b>Besar:</b> ada pesanan/transaksi, ada pembayaran online');
+    expect(laporan.body.text).toContain('<b>Harga patokan:</b> [isi harga]');
+    expect(laporan.body.text).toContain('Sudah punya akun penyedia pembayaran');
+    expect(draf.body.parse_mode).toBeUndefined();
+    expect(draf.body.text).toMatch(/^Halo Sari, terima kasih/);
+    expect(draf.body.text).toContain('Harga: [isi harga]');
+    expect(draf.body.reply_markup.inline_keyboard[0][0].url).toMatch(/^https:\/\/wa\.me\/6281234567890\?text=Halo%20Sari/);
+    expect(ke('api.resend.com')[0].body.text).toContain('DRAF PENAWARAN (bahasa formulir klien)\nHalo Sari');
+  });
+
+  it('draf gagal terkirim tidak membuat kiriman gagal', async () => {
+    let n = 0;
+    jawabTelegram = () => (++n === 1 ? Response.json({ ok: true }) : new Response('err', { status: 500 }));
+    const res = await kirim(sah(), buatEnv({ RESEND_API_KEY: undefined }));
+    expect(res.status).toBe(200);
+  });
+
+  it('tingkat dan harga tidak pernah ada di jawaban untuk klien', async () => {
+    const res = await kirim(sah());
+    expect(await res.text()).toBe('{"ok":true}');
   });
 
   it('rahasia wajib belum ada → 503 tanpa memanggil layanan apa pun', async () => {

@@ -5,9 +5,46 @@
 | M0 — Kerangka | Selesai, menunggu review PR | `claude/meja-depan-m0` |
 | M1 — Formulir bertahap | Selesai, menunggu review PR | `claude/meja-depan-m1` |
 | M2 — Pengiriman laporan | Selesai, menunggu review PR | `claude/meja-depan-m2` |
-| M3 — Tingkat & draf | Belum | |
+| M3 — Tingkat & draf | Selesai, menunggu review PR | `claude/meja-depan-m3` |
 | M4 — Lapisan AI | Belum | |
 | M5 — Pengerasan | Belum | |
+
+## M3 — Tingkat & draf
+
+- **Perkiraan tingkat** (SPEC §7) berbasis aturan di
+  `konfigurasi/tingkat.json`:
+  - setiap jawaban memunculkan "ciri" (login, transaksi, dll.);
+  - tingkat pertama yang cirinya cocok yang dipakai;
+  - alasan ditulis dari label ciri;
+  - perkiraan ditandai "kasar" bila ada jawaban "belum tahu" atau jenisnya
+    "lainnya" (D17).
+- **Harga patokan** per tingkat di konfigurasi yang sama, bawaan kosong →
+  "[isi harga]".
+- **Hal yang belum jelas**: pertanyaan dari jawaban "belum tahu", anggaran,
+  waktu, contoh, masalah yang terlalu singkat, dan pertanyaan baku per jenis
+  atau per jawaban (`konfigurasi/draf.json`).
+- **Draf penawaran** (SPEC §8) dalam bahasa formulir klien:
+  - poin apa yang dibuat (dari jawaban), harga, dan cara bayar
+    (DP/pelunasan, revisi sesuai lingkup);
+  - kalimat penawaran tambahan.
+  Teksnya ada di `konfigurasi/draf.json`.
+- Laporan Telegram kini memuat tingkat dan hal yang belum jelas. Draf dikirim
+  sebagai **pesan kedua** (teks polos, mudah disalin) dengan tombol
+  "Kirim draf lewat WhatsApp" yang membuka chat klien dengan draf terisi
+  (D18). Surel memuat laporan dan draf sekaligus.
+- Tingkat dan harga tidak pernah dikirim ke klien (diuji).
+- Tes: 72 tes lulus, termasuk tes unit aturan tingkat:
+  - Kecil, Sedang (panel/login/halaman/data bersama), dan Besar
+    (transaksi/peran);
+  - urutan prioritas, perkiraan kasar, aturan dari konfigurasi;
+  - konfigurasi tanpa tingkat bawaan;
+  - konsistensi konfigurasi (rujukan pertanyaan/pilihan, label ciri, tiga
+    bahasa draf).
+
+### Menunggu pemilik
+
+- Isi harga patokan bila ingin draf langsung berisi harga (README §9).
+- Periksa kata-kata draf di `konfigurasi/draf.json` (tiga bahasa).
 
 ## M2 — Pengiriman laporan
 

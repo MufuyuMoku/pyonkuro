@@ -1,0 +1,93 @@
+{
+  "belumJelas": {
+    "jawabanBelumTahu": "{pertanyaan} (klien menjawab belum tahu)",
+    "anggaranBelumTahu": "Berapa kisaran anggarannya? (klien belum tahu)",
+    "jenisLainnya": "Bentuk yang paling cocok apa: situs web, aplikasi untuk HP, atau aplikasi desktop?",
+    "waktuSecepatnya": "Tanggal pastinya kapan? Klien ingin secepatnya.",
+    "tanpaContoh": "Ada contoh situs atau aplikasi yang disukai?",
+    "masalahSingkat": "Masalahnya perlu diceritakan lebih rinci.",
+    "batasMasalahSingkat": 40,
+    "perJenis": {
+      "situs": ["Sudah punya domain, logo, dan isi (teks dan foto)?"],
+      "toko": ["Pengiriman dan ongkirnya dihitung bagaimana?"],
+      "desktop": ["Datanya perlu dicadangkan ke mana?"],
+      "hp": ["Cukup dipasang dari web, atau harus ada di Play Store/App Store?"],
+      "lainnya": []
+    },
+    "perJawaban": {
+      "bayar.ya": ["Sudah punya akun penyedia pembayaran (payment gateway) untuk QRIS?"]
+    }
+  },
+  "draf": {
+    "id": {
+      "salam": "Halo {nama}, terima kasih sudah menitipkan ide ke Pyonkuro.",
+      "pengantarPoin": "Dari ceritamu, ini yang akan dibuat:",
+      "harga": "Harga: {harga}",
+      "caraBayar": "Cara bayar: DP sebelum mulai, pelunasan saat serah terima. Revisi sesuai lingkup di atas.",
+      "tambahan": "Permintaan di luar daftar di atas akan dibuatkan penawaran tambahan.",
+      "penutup": "Kalau sudah cocok, kabari saja ya.\n— Mufuyu, Pyonkuro"
+    },
+    "en": {
+      "salam": "Hi {nama}, thank you for leaving your idea with Pyonkuro.",
+      "pengantarPoin": "Based on what you told me, here is what I would build:",
+      "harga": "Price: {harga}",
+      "caraBayar": "Payment: a deposit before work starts, the balance at handover. Revisions are covered within the scope above.",
+      "tambahan": "Anything beyond the list above will get a separate quote.",
+      "penutup": "If this works for you, just let me know.\n— Mufuyu, Pyonkuro"
+    },
+    "ja": {
+      "salam": "{nama} さん、Pyonkuro にアイデアをお預けいただきありがとうございます。",
+      "pengantarPoin": "伺った内容から、次のものをお作りします。",
+      "harga": "料金：{harga}",
+      "caraBayar": "お支払い：着手前に前金、納品時に残金をお願いします。修正は上記の範囲内で対応します。",
+      "tambahan": "上記以外のご要望は、別途お見積りします。",
+      "penutup": "この内容でよろしければ、お気軽にご連絡ください。\n— Mufuyu（Pyonkuro）"
+    }
+  },
+  "poin": {
+    "jenis": {
+      "situs": [{ "id": "Situs web", "en": "A website", "ja": "ウェブサイト" }],
+      "toko": [
+        { "id": "Toko online dengan katalog, keranjang, dan checkout", "en": "An online shop with catalog, cart, and checkout", "ja": "カタログ・カート・購入手続きのあるネットショップ" },
+        { "id": "Panel admin untuk produk, stok, dan pesanan", "en": "An admin panel for products, stock, and orders", "ja": "商品・在庫・注文を管理する管理画面" }
+      ],
+      "desktop": [{ "id": "Aplikasi desktop", "en": "A desktop app", "ja": "デスクトップアプリ" }],
+      "hp": [{ "id": "Aplikasi web yang bisa dipasang di HP", "en": "A web app that can be installed on phones", "ja": "スマホにインストールできるウェブアプリ" }],
+      "lainnya": []
+    },
+    "lanjutan": {
+      "halaman": {
+        "1-3": { "id": "Sekitar 1–3 halaman", "en": "About 1–3 pages", "ja": "1〜3ページ程度" },
+        "4-10": { "id": "Sekitar 4–10 halaman", "en": "About 4–10 pages", "ja": "4〜10ページ程度" },
+        "lebih-10": { "id": "Lebih dari 10 halaman", "en": "More than 10 pages", "ja": "10ページ以上" }
+      },
+      "ubahIsi": { "sendiri": { "id": "Panel admin supaya isinya bisa diubah sendiri", "en": "An admin panel so you can update the content yourself", "ja": "ご自身で内容を更新できる管理画面" } },
+      "login": { "ya": { "id": "Akun dan login untuk pengunjung", "en": "Visitor accounts and login", "ja": "訪問者のアカウントとログイン" } },
+      "produk": {
+        "kurang-20": { "id": "Katalog hingga sekitar 20 produk", "en": "A catalog of up to about 20 products", "ja": "約20点までの商品カタログ" },
+        "20-100": { "id": "Katalog 20–100 produk", "en": "A catalog of 20–100 products", "ja": "20〜100点の商品カタログ" },
+        "lebih-100": { "id": "Katalog lebih dari 100 produk", "en": "A catalog of more than 100 products", "ja": "100点以上の商品カタログ" }
+      },
+      "bayar": {
+        "ya": { "id": "Pembayaran QRIS", "en": "QRIS payments", "ja": "QRIS 決済" },
+        "tidak": { "id": "Pemesanan tanpa pembayaran online (transfer atau bayar di tempat)", "en": "Ordering without online payment (bank transfer or pay on delivery)", "ja": "オンライン決済なしの注文（振込・代引き）" }
+      },
+      "pengurus": { "tim": { "id": "Akun admin untuk beberapa orang dengan hak berbeda", "en": "Admin accounts for several people with different permissions", "ja": "権限の異なる複数の管理者アカウント" } },
+      "sistem": {
+        "windows": { "id": "Untuk Windows", "en": "For Windows", "ja": "Windows 対応" },
+        "linux": { "id": "Untuk Linux", "en": "For Linux", "ja": "Linux 対応" },
+        "keduanya": { "id": "Untuk Windows dan Linux", "en": "For Windows and Linux", "ja": "Windows・Linux 対応" }
+      },
+      "pengguna": {
+        "beberapa": { "id": "Data dipakai bersama beberapa orang", "en": "Data shared by several people", "ja": "複数人でのデータ共有" },
+        "peran": { "id": "Login dengan hak akses berbeda", "en": "Logins with different access levels", "ja": "権限別のログイン" }
+      },
+      "akun": { "ya": { "id": "Akun dan login pengguna", "en": "User accounts and login", "ja": "利用者のアカウントとログイン" } },
+      "luring": { "ya": { "id": "Tetap bisa dipakai tanpa internet", "en": "Works without internet", "ja": "オフラインでも利用可能" } }
+    },
+    "teks": {
+      "pekerjaan": { "id": "Untuk: {teks}", "en": "For: {teks}", "ja": "用途：{teks}" },
+      "bayangan": { "id": "Sesuai gambaran: {teks}", "en": "Based on your description: {teks}", "ja": "ご説明の内容：{teks}" }
+    }
+  }
+}
