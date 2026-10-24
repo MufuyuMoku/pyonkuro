@@ -55,6 +55,7 @@ export type TeksTitip = {
     surelTidakSah: string;
     kirimGagal: string;
     terlaluSering: string;
+    verifikasi: string;
   };
   terima: { judul: string; isi: string; kembali: string; whatsapp: string; surel: string }; // {nama}, {saluran}
 };
@@ -70,7 +71,7 @@ export const TEKS_TITIP: Record<Bahasa, TeksTitip> = {
     belumAktif: 'Formulir ini sedang disiapkan. Sementara itu, ceritakan kebutuhanmu lewat surel atau WhatsApp di halaman utama.',
     kembali: 'Kembali ke halaman utama',
     noscript: 'Formulir ini butuh JavaScript. Kamu juga bisa bercerita lewat surel ke mufuyumoku@gmail.com.',
-    privasi: 'Yang dikirim hanya jawabanmu di sini, termasuk nama dan kontak yang kamu tulis, untuk membalas pesanmu. Formulir ini tidak menyimpannya; jawabanmu diteruskan ke Telegram dan surel Pyonkuro, lalu dihapus paling lambat 90 hari setelah percakapan selesai, atau lebih cepat kalau kamu minta. Tanpa pelacak atau analitik.',
+    privasi: 'Yang dikirim hanya jawabanmu di sini, termasuk nama dan kontak yang kamu tulis, untuk membalas pesanmu. Formulir ini tidak menyimpannya; jawabanmu diteruskan ke Telegram dan surel Pyonkuro, lalu dihapus paling lambat 90 hari setelah percakapan selesai, atau lebih cepat kalau kamu minta. Pemeriksaan anti-spam memakai Cloudflare Turnstile. Tanpa pelacak atau analitik.',
     formulir: {
       langkahKe: 'Langkah {n} dari {total}',
       lanjut: 'Lanjut',
@@ -115,6 +116,7 @@ export const TEKS_TITIP: Record<Bahasa, TeksTitip> = {
       surelTidakSah: 'Alamat surelnya sepertinya belum benar.',
       kirimGagal: 'Maaf, pesannya belum terkirim. Coba lagi sebentar lagi, atau kirim ceritamu lewat surel ke mufuyumoku@gmail.com.',
       terlaluSering: 'Terlalu banyak kiriman dari jaringan ini. Coba lagi nanti, atau kirim lewat surel ke mufuyumoku@gmail.com.',
+      verifikasi: 'Pemeriksaan anti-spam belum selesai. Tunggu sebentar, lalu tekan Kirim lagi.',
     },
     terima: {
       judul: 'Terima kasih, {nama}!',
@@ -135,7 +137,7 @@ export const TEKS_TITIP: Record<Bahasa, TeksTitip> = {
     belumAktif: 'This form is still being set up. In the meantime, tell me what you need by email or WhatsApp from the main page.',
     kembali: 'Back to the main page',
     noscript: 'This form needs JavaScript. You can also write to mufuyumoku@gmail.com.',
-    privasi: 'Only your answers here are sent, including the name and contact you give, so I can reply. This form does not keep them: they are forwarded to Pyonkuro’s Telegram and email, and deleted no later than 90 days after our conversation ends, or sooner if you ask. No trackers or analytics.',
+    privasi: 'Only your answers here are sent, including the name and contact you give, so I can reply. This form does not keep them: they are forwarded to Pyonkuro’s Telegram and email, and deleted no later than 90 days after our conversation ends, or sooner if you ask. The anti-spam check uses Cloudflare Turnstile. No trackers or analytics.',
     formulir: {
       langkahKe: 'Step {n} of {total}',
       lanjut: 'Next',
@@ -180,6 +182,7 @@ export const TEKS_TITIP: Record<Bahasa, TeksTitip> = {
       surelTidakSah: 'That email address doesn’t look quite right.',
       kirimGagal: 'Sorry, your message didn’t go through. Please try again in a moment, or email mufuyumoku@gmail.com.',
       terlaluSering: 'Too many submissions from this network. Please try again later, or email mufuyumoku@gmail.com.',
+      verifikasi: 'The anti-spam check hasn’t finished yet. Wait a moment, then press Send again.',
     },
     terima: {
       judul: 'Thank you, {nama}!',
@@ -200,7 +203,7 @@ export const TEKS_TITIP: Record<Bahasa, TeksTitip> = {
     belumAktif: 'このフォームは準備中です。それまでは、トップページのメールまたは WhatsApp からご相談ください。',
     kembali: 'トップページに戻る',
     noscript: 'このフォームには JavaScript が必要です。mufuyumoku@gmail.com へのメールでもご相談いただけます。',
-    privasi: '送信されるのは、ここでの回答（お名前と連絡先を含む）のみで、ご返信のためだけに使います。フォーム側では保存せず、Pyonkuro の Telegram とメールに転送し、やり取りの終了から 90 日以内に削除します。ご希望があればそれより早く削除します。トラッカーや解析ツールは使っていません。',
+    privasi: '送信されるのは、ここでの回答（お名前と連絡先を含む）のみで、ご返信のためだけに使います。フォーム側では保存せず、Pyonkuro の Telegram とメールに転送し、やり取りの終了から 90 日以内に削除します。ご希望があればそれより早く削除します。スパム対策には Cloudflare Turnstile を使っています。トラッカーや解析ツールは使っていません。',
     formulir: {
       langkahKe: '{total} 問中 {n} 問目',
       lanjut: '次へ',
@@ -245,6 +248,7 @@ export const TEKS_TITIP: Record<Bahasa, TeksTitip> = {
       surelTidakSah: 'メールアドレスをご確認ください。',
       kirimGagal: '申し訳ありません、送信できませんでした。少し時間をおいて再度お試しいただくか、mufuyumoku@gmail.com へメールでお送りください。',
       terlaluSering: 'このネットワークからの送信が多すぎます。時間をおいて再度お試しいただくか、mufuyumoku@gmail.com へメールでお送りください。',
+      verifikasi: 'スパム対策の確認がまだ終わっていません。少し待ってから、もう一度「送信する」を押してください。',
     },
     terima: {
       judul: '{nama} さん、ありがとうございます！',

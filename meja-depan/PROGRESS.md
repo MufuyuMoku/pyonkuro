@@ -4,10 +4,59 @@
 | --- | --- | --- |
 | M0 — Kerangka | Selesai, menunggu review PR | `claude/meja-depan-m0` |
 | M1 — Formulir bertahap | Selesai, menunggu review PR | `claude/meja-depan-m1` |
-| M2 — Pengiriman laporan | Belum | |
+| M2 — Pengiriman laporan | Selesai, menunggu review PR | `claude/meja-depan-m2` |
 | M3 — Tingkat & draf | Belum | |
 | M4 — Lapisan AI | Belum | |
 | M5 — Pengerasan | Belum | |
+
+## M2 — Pengiriman laporan
+
+- Worker `POST /kirim` memeriksa kiriman berurutan:
+  1. asal (CORS, hanya `asalDiizinkan`);
+  2. ukuran (≤ 20 KB) dan format JSON;
+  3. kolom jebakan bot;
+  4. validasi yang sama dengan browser;
+  5. token Turnstile (termasuk hostname-nya);
+  6. batas 5 kiriman per IP per jam (D14).
+- Laporan §6 tanpa AI ke Telegram:
+  - kartu ringkas (nama, kontak, jenis, waktu, anggaran, bahasa formulir);
+  - ringkasan kebutuhan;
+  - tombol "Buka chat WhatsApp" bila nomornya pasti.
+  Tingkat, hal yang belum jelas, dan draf menyusul di M3.
+- Salinan laporan utuh ke surel pemilik lewat Resend. Gagalnya satu saluran
+  tidak menghalangi yang lain; klien hanya mendapat galat bila keduanya
+  gagal (D16).
+- Sanitasi §10:
+  - semua teks klien di-escape;
+  - teks bebas klien selalu tampil sebagai kutipan;
+  - pratinjau tautan dimatikan;
+  - ada cadangan teks polos bila Telegram menolak HTML;
+  - panjang pesan dijaga di bawah 4096 karakter (D15).
+- Halaman formulir: widget Turnstile (muncul hanya bila perlu interaksi) di
+  layar ringkasan, kolom jebakan bot, dan pesan untuk galat 403/429.
+- `GET /sehat` kini menunjukkan rahasia mana yang sudah terpasang (tanpa
+  nilainya).
+- Tes: 47 tes unit lulus:
+  - rute, CORS, jebakan, validasi, ukuran;
+  - Turnstile, batas IP;
+  - kegagalan tiap saluran, cadangan teks polos, escape;
+  - batas panjang, penghitung, dan alarm.
+- Dicek juga di runtime Cloudflare lokal (`wrangler dev`/workerd):
+  - `/sehat`, preflight, validasi, jebakan, dan penolakan asal lain;
+  - Durable Object (RPC, penyimpanan, alarm) lewat worker uji sementara.
+- Uji alur di browser dengan Turnstile tiruan:
+  - token terkirim, kolom jebakan kosong;
+  - widget diulang setelah gagal;
+  - pesan 403 dan 429.
+
+### Menunggu pemilik
+
+- `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, dan `TURNSTILE_SECRET_KEY` wajib
+  ada; tanpa itu `/kirim` menjawab 503. `RESEND_API_KEY` disarankan.
+- Turnstile: hostname `mufuyumoku.github.io` harus terdaftar di widget.
+- Pengiriman nyata ke Telegram/Resend/Turnstile belum bisa diuji dari
+  lingkungan ini (jaringan keluar dibatasi). Uji pertama sebaiknya dilakukan
+  pemilik setelah rahasia terpasang (README §7).
 
 ## M1 — Formulir bertahap
 
