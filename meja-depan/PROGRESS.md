@@ -6,8 +6,51 @@
 | M1 — Formulir bertahap | Selesai, menunggu review PR | `claude/meja-depan-m1` |
 | M2 — Pengiriman laporan | Selesai, menunggu review PR | `claude/meja-depan-m2` |
 | M3 — Tingkat & draf | Selesai, menunggu review PR | `claude/meja-depan-m3` |
-| M4 — Lapisan AI | Belum | |
+| M4 — Lapisan AI | Selesai, menunggu review PR | `claude/meja-depan-m4` |
 | M5 — Pengerasan | Belum | |
+
+## M4 — Lapisan AI
+
+- Penyedia bawaan **Cloudflare Workers AI** lewat binding `AI` (tanpa kunci
+  tambahan), model `@cf/aisingapore/gemma-sea-lion-v4-27b-it` (D4).
+- **Claude API** (`claude-haiku-5-5`, SDK resmi `@anthropic-ai/sdk`) hanya
+  bila `penyedia: "claude"` di `konfigurasi/ai.json` **dan**
+  `ANTHROPIC_API_KEY` ada; kalau kuncinya tidak ada, kembali ke Workers AI.
+  `"mati"` mematikan AI.
+- Tugas AI hanya tiga (SPEC §9): ringkasan kebutuhan, daftar hal yang belum
+  jelas, dan memperhalus bahasa draf. Tingkat dan harga selalu dari aturan.
+- Perlindungan (D19):
+  - data klien dibungkus `<data_klien>` sebagai data, dengan instruksi
+    sistem yang menolak perintah di dalamnya;
+  - nama, kontak, dan nama usaha tidak dikirim (nama diganti `{NAMA}`);
+  - hasil diperiksa per bagian: draf harus memuat harga persis, tanpa angka
+    atau tautan baru (mencegah harga atau tenggat karangan);
+  - bagian yang gagal pemeriksaan memakai hasil aturan.
+- Batas pemakaian: **50 panggilan/hari** (Durable Object yang sama), masukan
+  ≤ 6.000 karakter, keluaran ≤ 2.000 token, batas waktu 15 detik.
+- Laporan menandai bagian yang dirapikan AI. Jawaban asli klien tetap
+  disertakan di bawahnya.
+- Catatan privasi formulir menyebut pemrosesan AI (tanpa nama dan kontak).
+- Tes: 94 tes lulus, termasuk:
+  - pemilihan penyedia;
+  - isi pesan ke AI (tanpa data pribadi, tag tidak bisa ditutup);
+  - pemeriksaan hasil (harga, angka, tautan, penanda nama, daftar);
+  - format jawaban Workers AI, galat, batas waktu, batas harian, batas
+    masukan;
+  - jalur Claude (permintaan dengan SDK, penolakan, galat API);
+  - laporan lengkap dengan AI, dan **sistem tetap jalan tanpa kunci/binding
+    AI**.
+- Bundel ber-SDK dijalankan di workerd lokal (`/sehat`, validasi) dengan
+  konfigurasi tanpa binding AI. Workers AI sungguhan hanya bisa diuji setelah
+  terpasang di akun Cloudflare.
+
+### Menunggu pemilik
+
+- Tidak ada rahasia baru untuk Workers AI. Coba satu kiriman setelah
+  terpasang dan periksa mutu ringkasan/draf. Kalau kurang baik, ganti model
+  di `konfigurasi/ai.json` (README §10).
+- Opsional: `ANTHROPIC_API_KEY` dan `penyedia: "claude"` bila ingin memakai
+  Claude.
 
 ## M3 — Tingkat & draf
 

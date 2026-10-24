@@ -220,3 +220,42 @@ bisa diubah tanpa menyentuh kode.
   tetap ada di surel.
 - Bila Telegram menolak format atau tombol (400), pesan dikirim ulang sebagai
   teks polos tanpa tombol.
+
+## D19 — Rancangan lapisan AI
+
+- **Yang dikirim ke AI**: jenis, usaha, masalah, rincian jawaban, contoh,
+  waktu, anggaran, daftar awal hal yang belum jelas, dan draf awal.
+  - Tidak dikirim: nama, kontak, dan nama usaha.
+  - Draf memakai penanda `{NAMA}` yang diganti nama klien setelah AI selesai.
+  - Teks bebas klien tetap bisa memuat data pribadi yang klien tulis sendiri;
+    karena itu catatan privasi menyebut pemrosesan AI.
+- **Anti injeksi**:
+  - jawaban klien dibungkus `<data_klien>` sebagai JSON;
+  - `<` dan `>` di-escape, jadi teks klien tidak bisa menutup tag;
+  - instruksi sistem menyatakan isinya data saja;
+  - hasil AI tidak pernah dipercaya untuk tingkat atau harga.
+- **Pemeriksaan hasil, per bagian**:
+  - ringkasan 1–5 poin; daftar pertanyaan ≤ 10 poin; setiap poin ≤ 300
+    karakter dan harus teks;
+  - draf ≤ 3.000 karakter, memuat teks harga persis dan `{NAMA}`;
+  - **tidak boleh ada angka yang tidak ada di draf awal** (menutup harga,
+    diskon, atau tenggat karangan) dan tidak boleh ada tautan.
+  - Bagian yang gagal kembali ke hasil aturan; bagian lain tetap dipakai.
+- **Di laporan**, bagian dari AI diberi tanda "(dirapikan AI)". Jawaban asli
+  klien selalu ikut ditampilkan sebagai kutipan, jadi pemilik bisa
+  membandingkan.
+- **Batas**:
+  - 50 panggilan/hari (UTC), dihitung oleh Durable Object `Penghitung`;
+  - setiap percobaan dihitung, termasuk yang gagal;
+  - batas waktu 15 detik, supaya klien tidak menunggu terlalu lama;
+  - kalau batas tercapai, laporan tetap terkirim tanpa AI.
+- **Claude API** dipanggil lewat SDK resmi `@anthropic-ai/sdk`:
+  - model ringan `claude-haiku-5-5` (SPEC §9);
+  - `output_config.format` berupa JSON schema, `effort: "low"`, tanpa
+    `temperature` (tidak diterima model ini);
+  - penolakan (`stop_reason: "refusal"`) atau galat → hasil aturan.
+  - SDK menambah bundel worker menjadi ±180 KB gzip, masih jauh di bawah
+    batas paket gratis.
+- **Workers AI** dipanggil lewat binding `AI` dengan `response_format`
+  JSON schema. Jawabannya bisa berupa teks, objek, atau format chat
+  completion; ketiganya ditangani.

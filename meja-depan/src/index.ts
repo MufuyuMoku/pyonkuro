@@ -1,6 +1,8 @@
 // Worker Meja Depan: menerima kiriman formulir Titip Ide, memeriksanya, lalu
 // mengirim laporan ke pemilik lewat Telegram dan surel. Tidak menyimpan kiriman.
-import { validasi } from './formulir';
+import { panggilAi, PENANDA_NAMA } from './ai';
+import { halBelumJelas, hargaPatokan, perkiraTingkat, susunDraf } from './aturan';
+import { validasi, type Kiriman } from './formulir';
 import { subjekSurel, susunPaket } from './laporan';
 import { Penghitung } from './penghitung';
 import { kirimSurel, kirimTelegram } from './saluran';
@@ -11,6 +13,7 @@ export { Penghitung };
 
 export interface Env {
   PENGHITUNG: DurableObjectNamespace<Penghitung>;
+  AI?: Ai;
   TELEGRAM_BOT_TOKEN?: string;
   TELEGRAM_CHAT_ID?: string;
   TURNSTILE_SECRET_KEY?: string;
@@ -44,6 +47,26 @@ function kodeAcak(): string {
 }
 
 const penghitung = (env: Env) => env.PENGHITUNG.get(env.PENGHITUNG.idFromName('penghitung'));
+
+// Laporan lengkap: aturan dulu, lalu (bila tersedia) dirapikan AI.
+async function siapkanPaket(data: Kiriman, env: Env) {
+  const tingkat = perkiraTingkat(data).id;
+  const dasar = {
+    belumJelas: halBelumJelas(data),
+    drafBernama: susunDraf({ ...data, nama: PENANDA_NAMA }, tingkat),
+    harga: hargaPatokan(tingkat),
+  };
+  const ai = await panggilAi(env, penghitung(env), data, dasar);
+  const nama = data.nama.replace(/\s*\n\s*/g, ' ');
+  return susunPaket(data, {
+    kode: kodeAcak(),
+    waktu: new Date(),
+    ringkasanAi: ai?.ringkasan,
+    belumJelas: ai?.belumJelas,
+    draf: ai?.draf?.replaceAll(PENANDA_NAMA, () => nama),
+    penyediaAi: ai?.penyedia,
+  });
+}
 
 async function terimaKiriman(req: Request, env: Env, asal: string): Promise<Response> {
   if (!env.TURNSTILE_SECRET_KEY || !env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) {
@@ -80,7 +103,7 @@ async function terimaKiriman(req: Request, env: Env, asal: string): Promise<Resp
     return jawab({ ok: false, galat: 'batas' }, 429, asal);
   }
 
-  const paket = susunPaket(hasil.data, { kode: kodeAcak(), waktu: new Date() });
+  const paket = await siapkanPaket(hasil.data, env);
   const [telegram, surel] = await Promise.allSettled([
     kirimTelegram(env.TELEGRAM_BOT_TOKEN, env.TELEGRAM_CHAT_ID, paket.pesan),
     env.RESEND_API_KEY

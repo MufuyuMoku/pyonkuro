@@ -18,3 +18,7 @@ class_name = "Penghitung"
 [[migrations]]
 tag = "v1"
 new_sqlite_classes = ["Penghitung"]
+
+# Workers AI (penyedia AI bawaan). Memakai jatah gratis akun, tanpa kunci tambahan.
+[ai]
+binding = "AI"

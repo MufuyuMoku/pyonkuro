@@ -79,7 +79,7 @@ export function halBelumJelas(data: Kiriman, kd: KonfigurasiDraf = DRAF, kp: Kon
   if (data.jenis === 'lainnya') daftar.push(b.jenisLainnya);
   for (const p of kp.lanjutan[data.jenis] ?? []) {
     const jawaban = data.lanjutan[p.id];
-    if (jawaban === BELUM_TAHU) daftar.push(b.jawabanBelumTahu.replace('{pertanyaan}', p.pertanyaan.id));
+    if (jawaban === BELUM_TAHU) daftar.push(b.jawabanBelumTahu.replace('{pertanyaan}', () => p.pertanyaan.id));
     if (jawaban) daftar.push(...(b.perJawaban[`${p.id}.${jawaban}`] ?? []));
   }
   if (data.masalah.length < b.batasMasalahSingkat) daftar.push(b.masalahSingkat);
@@ -101,7 +101,7 @@ export function poinPekerjaan(data: Kiriman, kd: KonfigurasiDraf = DRAF, kp: Kon
     if (!jawaban) continue;
     if (p.tipe === 'teks') {
       const pola = kd.poin.teks[p.id]?.[bhs];
-      if (pola) poin.push(pola.replace('{teks}', potongPoin(jawaban.replace(/\s*\n\s*/g, ' '))));
+      if (pola) poin.push(pola.replace('{teks}', () => potongPoin(jawaban.replace(/\s*\n\s*/g, ' '))));
     } else {
       const t = kd.poin.lanjutan[p.id]?.[jawaban]?.[bhs];
       if (t) poin.push(t);
@@ -115,9 +115,9 @@ export function susunDraf(data: Kiriman, tingkat: string, kd: KonfigurasiDraf = 
   const t = kd.draf[data.bahasa];
   const nama = data.nama.replace(/\s*\n\s*/g, ' ');
   return [
-    t.salam.replace('{nama}', nama),
+    t.salam.replace('{nama}', () => nama),
     [t.pengantarPoin, ...poinPekerjaan(data, kd).map((p) => `• ${p}`)].join('\n'),
-    t.harga.replace('{harga}', hargaPatokan(tingkat, kt)),
+    t.harga.replace('{harga}', () => hargaPatokan(tingkat, kt)),
     t.caraBayar,
     t.tambahan,
     t.penutup,

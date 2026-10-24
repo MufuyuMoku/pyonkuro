@@ -141,7 +141,7 @@ export type Paket = { laporan: Laporan; draf: string; pesan: PesanTelegram[]; su
 // Bagian tambahan bisa diganti (mis. oleh lapisan AI); tingkat dan harga selalu dari aturan.
 export function susunPaket(
   data: Kiriman,
-  opsi: { kode: string; waktu: Date; ringkasanAi?: string[]; belumJelas?: string[]; draf?: string },
+  opsi: { kode: string; waktu: Date; ringkasanAi?: string[]; belumJelas?: string[]; draf?: string; penyediaAi?: string },
 ): Paket {
   const perkiraan = perkiraTingkat(data);
   const draf = opsi.draf ?? susunDraf(data, perkiraan.id);
@@ -154,7 +154,10 @@ export function susunPaket(
         { label: 'Harga patokan', teks: hargaPatokan(perkiraan.id) },
       ],
     },
-    { judul: 'Hal yang belum jelas', baris: belum.length ? belum.map((t) => ({ teks: `• ${t}` })) : [{ teks: '—' }] },
+    {
+      judul: opsi.belumJelas ? 'Hal yang belum jelas (dirapikan AI)' : 'Hal yang belum jelas',
+      baris: belum.length ? belum.map((t) => ({ teks: `• ${t}` })) : [{ teks: '—' }],
+    },
   ];
   const laporan = susunLaporan(data, { kode: opsi.kode, waktu: opsi.waktu, tambahan, ringkasanAi: opsi.ringkasanAi });
 
@@ -163,7 +166,15 @@ export function susunPaket(
     polos: draf,
     tombol: urlDraf && urlDraf.length <= BATAS_URL_TOMBOL ? { teks: 'Kirim draf lewat WhatsApp', url: urlDraf } : null,
   };
-  const keterangan: Bagian = { baris: [{ teks: 'Draf penawaran ada di pesan berikutnya. Isi harga sebelum dikirim.' }] };
+  const bagianAi = [opsi.ringkasanAi && 'ringkasan', opsi.belumJelas && 'daftar pertanyaan', opsi.draf && 'bahasa draf'].filter(Boolean);
+  const keterangan: Bagian = {
+    baris: [
+      ...(opsi.penyediaAi && bagianAi.length
+        ? [{ teks: `AI (${opsi.penyediaAi}) merapikan: ${bagianAi.join(', ')}. Tingkat dan harga tetap dari aturan.` }]
+        : []),
+      { teks: 'Draf penawaran ada di pesan berikutnya. Isi harga sebelum dikirim.' },
+    ],
+  };
   const utama = pesanTelegram({ ...laporan, bagian: [...laporan.bagian, keterangan] });
 
   const surel = [renderPolos(laporan, { utuh: true }), `DRAF PENAWARAN (bahasa formulir klien)\n${draf}`].join('\n\n');

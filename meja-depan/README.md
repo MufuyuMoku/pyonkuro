@@ -150,3 +150,24 @@ lalu commit ke `main`. Worker terpasang ulang otomatis.
 Tes otomatis memeriksa bahwa konfigurasi tetap konsisten, mis. tidak merujuk
 pertanyaan yang tidak ada. Kalau tes di pull request merah setelah mengubah
 konfigurasi, baca pesan galatnya: biasanya ada nama yang salah ketik.
+
+## 10. Lapisan AI (merapikan laporan)
+
+Bawaannya memakai **Cloudflare Workers AI** dengan jatah gratis akun
+Cloudflare yang sama. Tidak perlu kunci tambahan. Pengaturannya ada di
+`konfigurasi/ai.json`:
+
+- `"penyedia"`:
+  - `"workers-ai"` (bawaan);
+  - `"claude"`: memakai Claude API, hanya bila secret `ANTHROPIC_API_KEY`
+    ada; biayanya per pemakaian, ditagih ke akun Anthropic pemilik kunci;
+  - `"mati"`: tanpa AI.
+- `"modelWorkersAi"`: model Workers AI. Alasan pilihan bawaan dan alternatif
+  yang lebih hemat ada di `DECISIONS.md` (D4).
+- `"batasPanggilanPerHari"`: bawaan 50, sekitar separuh jatah gratis
+  Workers AI. Setelah batas tercapai, laporan tetap terkirim tanpa AI.
+
+AI hanya merapikan ringkasan, daftar pertanyaan, dan bahasa draf. Tingkat
+proyek dan harga selalu dari aturan (§9). Kalau AI gagal atau hasilnya
+melanggar aturan (mis. menambah harga atau tenggat), laporan memakai hasil
+tanpa AI.

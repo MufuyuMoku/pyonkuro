@@ -71,7 +71,7 @@ export const TEKS_TITIP: Record<Bahasa, TeksTitip> = {
     belumAktif: 'Formulir ini sedang disiapkan. Sementara itu, ceritakan kebutuhanmu lewat surel atau WhatsApp di halaman utama.',
     kembali: 'Kembali ke halaman utama',
     noscript: 'Formulir ini butuh JavaScript. Kamu juga bisa bercerita lewat surel ke mufuyumoku@gmail.com.',
-    privasi: 'Yang dikirim hanya jawabanmu di sini, termasuk nama dan kontak yang kamu tulis, untuk membalas pesanmu. Formulir ini tidak menyimpannya; jawabanmu diteruskan ke Telegram dan surel Pyonkuro, lalu dihapus paling lambat 90 hari setelah percakapan selesai, atau lebih cepat kalau kamu minta. Pemeriksaan anti-spam memakai Cloudflare Turnstile. Tanpa pelacak atau analitik.',
+    privasi: 'Yang dikirim hanya jawabanmu di sini, termasuk nama dan kontak yang kamu tulis, untuk membalas pesanmu. Formulir ini tidak menyimpannya; jawabanmu diteruskan ke Telegram dan surel Pyonkuro, lalu dihapus paling lambat 90 hari setelah percakapan selesai, atau lebih cepat kalau kamu minta. Jawabanmu, tanpa nama dan kontak, bisa dirapikan otomatis oleh layanan AI (Cloudflare Workers AI) untuk Pyonkuro. Pemeriksaan anti-spam memakai Cloudflare Turnstile. Tanpa pelacak atau analitik.',
     formulir: {
       langkahKe: 'Langkah {n} dari {total}',
       lanjut: 'Lanjut',
@@ -137,7 +137,7 @@ export const TEKS_TITIP: Record<Bahasa, TeksTitip> = {
     belumAktif: 'This form is still being set up. In the meantime, tell me what you need by email or WhatsApp from the main page.',
     kembali: 'Back to the main page',
     noscript: 'This form needs JavaScript. You can also write to mufuyumoku@gmail.com.',
-    privasi: 'Only your answers here are sent, including the name and contact you give, so I can reply. This form does not keep them: they are forwarded to Pyonkuro’s Telegram and email, and deleted no later than 90 days after our conversation ends, or sooner if you ask. The anti-spam check uses Cloudflare Turnstile. No trackers or analytics.',
+    privasi: 'Only your answers here are sent, including the name and contact you give, so I can reply. This form does not keep them: they are forwarded to Pyonkuro’s Telegram and email, and deleted no later than 90 days after our conversation ends, or sooner if you ask. Your answers, without your name or contact details, may be tidied up automatically by an AI service (Cloudflare Workers AI) for Pyonkuro. The anti-spam check uses Cloudflare Turnstile. No trackers or analytics.',
     formulir: {
       langkahKe: 'Step {n} of {total}',
       lanjut: 'Next',
@@ -203,7 +203,7 @@ export const TEKS_TITIP: Record<Bahasa, TeksTitip> = {
     belumAktif: 'このフォームは準備中です。それまでは、トップページのメールまたは WhatsApp からご相談ください。',
     kembali: 'トップページに戻る',
     noscript: 'このフォームには JavaScript が必要です。mufuyumoku@gmail.com へのメールでもご相談いただけます。',
-    privasi: '送信されるのは、ここでの回答（お名前と連絡先を含む）のみで、ご返信のためだけに使います。フォーム側では保存せず、Pyonkuro の Telegram とメールに転送し、やり取りの終了から 90 日以内に削除します。ご希望があればそれより早く削除します。スパム対策には Cloudflare Turnstile を使っています。トラッカーや解析ツールは使っていません。',
+    privasi: '送信されるのは、ここでの回答（お名前と連絡先を含む）のみで、ご返信のためだけに使います。フォーム側では保存せず、Pyonkuro の Telegram とメールに転送し、やり取りの終了から 90 日以内に削除します。ご希望があればそれより早く削除します。回答は、お名前と連絡先を除いたうえで、Pyonkuro のために AI サービス（Cloudflare Workers AI）で自動的に整理されることがあります。スパム対策には Cloudflare Turnstile を使っています。トラッカーや解析ツールは使っていません。',
     formulir: {
       langkahKe: '{total} 問中 {n} 問目',
       lanjut: '次へ',

@@ -1,0 +1,9 @@
+{
+  "penyedia": "workers-ai",
+  "modelWorkersAi": "@cf/aisingapore/gemma-sea-lion-v4-27b-it",
+  "modelClaude": "claude-haiku-5-5",
+  "batasPanggilanPerHari": 50,
+  "batasTokenKeluaran": 2000,
+  "batasMasukanKarakter": 6000,
+  "batasWaktuDetik": 15
+}

@@ -229,8 +229,8 @@ function mulai(form: HTMLFormElement, { bahasa, alamat, turnstile, teks }: Data)
     try { sessionStorage.removeItem(SIMPANAN); } catch { /* tidak apa-apa */ }
     const saluran = data.kontakJenis === 'surel' ? teks.terima.surel : teks.terima.whatsapp;
     form.hidden = true;
-    $('terima-judul').textContent = teks.terima.judul.replace('{nama}', data.nama);
-    $('terima-isi').textContent = teks.terima.isi.replace('{saluran}', `${saluran} (${data.kontak})`);
+    $('terima-judul').textContent = teks.terima.judul.replace('{nama}', () => data.nama);
+    $('terima-isi').textContent = teks.terima.isi.replace('{saluran}', () => `${saluran} (${data.kontak})`);
     const terima = $('terima');
     terima.hidden = false;
     terima.scrollIntoView({ block: 'start' });
