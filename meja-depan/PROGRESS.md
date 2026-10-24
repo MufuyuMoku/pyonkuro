@@ -7,7 +7,56 @@
 | M2 — Pengiriman laporan | Selesai, menunggu review PR | `claude/meja-depan-m2` |
 | M3 — Tingkat & draf | Selesai, menunggu review PR | `claude/meja-depan-m3` |
 | M4 — Lapisan AI | Selesai, menunggu review PR | `claude/meja-depan-m4` |
-| M5 — Pengerasan | Belum | |
+| M5 — Pengerasan | Selesai, menunggu review PR | `claude/meja-depan-m5` |
+
+## M5 — Pengerasan
+
+- **Tes end-to-end** (`npm run e2e`, juga di CI): Chromium sungguhan + situs
+  hasil build + worker Meja Depan. Hanya Telegram, Resend, dan Turnstile yang
+  ditiru (D20). Tujuh skenario:
+  - ID toko online, EN situs web dengan kontak surel, JA aplikasi HP —
+    masing-masing sampai halaman terima kasih, dengan isi laporan, draf, dan
+    surel diperiksa;
+  - galat validasi per layar;
+  - kolom jebakan bot;
+  - batas kiriman (kiriman keenam);
+  - tampilan desktop 1280px.
+- **Cek tampilan HP**: di setiap layar formulir, di ketiga bahasa, pada lebar
+  375px, tidak ada yang meluber ke samping.
+- Klien tidak pernah melihat tingkat, harga, atau tenggat: diperiksa pada teks
+  yang terlihat di halaman terima kasih.
+- CI: job `e2e` di setiap PR. Pemasangan worker di `main` baru jalan setelah
+  `uji` dan `e2e` lulus.
+- Header keamanan di semua jawaban worker (`cache-control: no-store`,
+  `x-content-type-options: nosniff`).
+- Typecheck kini juga mencakup berkas e2e.
+- Catatan privasi di layar ringkasan formulir (tiga bahasa) memuat:
+  - data yang dikumpulkan dan tujuannya;
+  - tempat data diteruskan dan masa simpannya;
+  - pemrosesan AI dan Turnstile;
+  - tanpa pelacak.
+- Panduan pemilik (README):
+  - daftar periksa urutan pemasangan;
+  - cara mengubah pertanyaan (§11), aturan tingkat dan harga patokan (§9),
+    dan AI (§10);
+  - panduan saat ada masalah (§12).
+
+## Ringkasan: yang menunggu pemilik
+
+1. Review dan gabungkan PR M0–M5 **berurutan**.
+2. Repository secrets:
+   - `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `TELEGRAM_BOT_TOKEN`,
+     `TELEGRAM_CHAT_ID`, `TURNSTILE_SECRET_KEY`;
+   - `RESEND_API_KEY` (disarankan);
+   - `ANTHROPIC_API_KEY` (opsional).
+3. Subdomain workers.dev di akun Cloudflare (README §3.2), dan hostname
+   `mufuyumoku.github.io` di widget Turnstile (§5).
+4. Setelah worker terpasang: isi `alamatWorker` di `konfigurasi/umum.json`,
+   lalu kirim satu formulir percobaan. Ini juga uji pertama Telegram, Resend,
+   Turnstile, dan Workers AI sungguhan, yang tidak bisa dilakukan dari
+   lingkungan pengembangan.
+5. Setujui atau ubah janji masa simpan 90 hari di catatan privasi (D10).
+6. Opsional: harga patokan, kata-kata draf, dan pertanyaan.
 
 ## M4 — Lapisan AI
 

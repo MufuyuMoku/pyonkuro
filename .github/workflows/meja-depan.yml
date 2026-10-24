@@ -37,6 +37,26 @@ jobs:
       - run: npm test
       - run: npm run cek-bundel
 
+  # Tes end-to-end: Chromium + situs hasil build + worker (layanan luar ditiru).
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            meja-depan/package-lock.json
+      - run: npm ci
+      - run: npm ci
+        working-directory: meja-depan
+      - run: npx playwright install --with-deps chromium
+        working-directory: meja-depan
+      - run: npm run e2e
+        working-directory: meja-depan
+
   # Pastikan situs Pyonkuro tetap bisa dibangun sebelum PR digabung.
   situs:
     if: github.event_name == 'pull_request'
@@ -51,7 +71,7 @@ jobs:
       - run: npm run build
 
   pasang:
-    needs: uji
+    needs: [uji, e2e]
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     concurrency:

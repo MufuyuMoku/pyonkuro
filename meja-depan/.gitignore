@@ -2,3 +2,4 @@
 .env
 .wrangler/
 .keluaran/
+.e2e-situs/
