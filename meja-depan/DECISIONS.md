@@ -259,3 +259,17 @@ bisa diubah tanpa menyentuh kode.
 - **Workers AI** dipanggil lewat binding `AI` dengan `response_format`
   JSON schema. Jawabannya bisa berupa teks, objek, atau format chat
   completion; ketiganya ditangani.
+
+## D20 — Bentuk tes end-to-end
+
+Tes e2e memakai Chromium (Playwright 1.63) terhadap situs hasil build. Situs
+dibangun ke `meja-depan/.e2e-situs` dengan `MEJA_DEPAN_URL` ke worker lokal,
+jadi `dist/` produksi tidak tersentuh.
+
+Worker dijalankan dengan handler yang sama persis dengan produksi lewat adaptor
+HTTP di Node, dengan Durable Object di memori. Yang ditiru hanya layanan luar
+(Telegram, Resend, siteverify Turnstile, dan skrip widget Turnstile di
+browser), karena layanan itu butuh rahasia asli dan jaringan.
+
+Runtime Cloudflare (workerd) sendiri sudah dicek terpisah lewat `wrangler dev`
+di M2 dan M4. Pengiriman sungguhan ke layanan luar menunggu rahasia pemilik.

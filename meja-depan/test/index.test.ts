@@ -85,6 +85,8 @@ describe('kiriman', () => {
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ ok: true });
     expect(res.headers.get('access-control-allow-origin')).toBe(ASAL);
+    expect(res.headers.get('cache-control')).toBe('no-store');
+    expect(res.headers.get('x-content-type-options')).toBe('nosniff');
 
     const [tg] = ke('api.telegram.org');
     expect(tg.url).toBe('https://api.telegram.org/bottoken-palsu/sendMessage');

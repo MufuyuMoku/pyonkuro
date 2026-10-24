@@ -10,6 +10,18 @@ adalah sebuah **worker** kecil di Cloudflare (folder ini). Spesifikasi lengkap:
 [`../SPEC-meja-depan.md`](../SPEC-meja-depan.md). Kemajuan:
 [`PROGRESS.md`](PROGRESS.md). Keputusan: [`DECISIONS.md`](DECISIONS.md).
 
+## Daftar periksa pemilik (urutan singkat)
+
+1. Gabungkan PR Meja Depan ke `main` **berurutan** (M0 → M5).
+2. Siapkan akun dan rahasia: Cloudflare (§3), bot Telegram (§4), Turnstile
+   (§5), dan Resend (§6). Simpan semuanya sebagai repository secrets (§2).
+3. Jalankan workflow **Meja Depan** (§7). Cek `<alamat-worker>/sehat`.
+4. Isi `alamatWorker` di `konfigurasi/umum.json` dan commit (§7).
+5. Kirim satu formulir percobaan dari HP. Laporan dan draf harus masuk ke
+   Telegram, salinannya ke surel.
+6. Opsional: isi harga patokan (§9), sesuaikan pertanyaan (§11), dan periksa
+   kata-kata catatan privasi (`src/lib/teks-titip.ts`, `privasi`).
+
 ---
 
 ## 1. Rahasia yang dibutuhkan
@@ -125,7 +137,9 @@ npm install
 cp .env.example .dev.vars   # lalu isi nilainya di .dev.vars (berkas ini diabaikan git)
                             # tambahkan ASAL_TAMBAHAN=http://localhost:4321 agar situs lokal boleh mengirim
 npm run dev                 # worker jalan di http://localhost:8787
-npm test                    # menjalankan tes
+npm test                    # tes unit
+npm run periksa             # pemeriksaan tipe
+npm run e2e                 # tes end-to-end di browser (butuh `npx playwright install chromium` sekali)
 ```
 
 ## 9. Mengubah harga patokan, aturan tingkat, dan draf
@@ -171,3 +185,56 @@ AI hanya merapikan ringkasan, daftar pertanyaan, dan bahasa draf. Tingkat
 proyek dan harga selalu dari aturan (§9). Kalau AI gagal atau hasilnya
 melanggar aturan (mis. menambah harga atau tenggat), laporan memakai hasil
 tanpa AI.
+
+## 11. Mengubah pertanyaan formulir
+
+Pertanyaan pilihan ada di `konfigurasi/pertanyaan.json`. Setiap teks punya
+tiga bahasa: `"id"`, `"en"`, `"ja"`.
+
+- **Mengganti kata-kata pertanyaan atau pilihan** — ubah teksnya saja. Jangan
+  ubah `"id"` milik pertanyaan/pilihan (mis. `"kurang-20"`). `id` dipakai
+  aturan tingkat dan draf.
+- **Menambah pilihan** — salin satu baris pilihan, beri `id` baru yang unik
+  di pertanyaan itu, lalu isi labelnya dalam tiga bahasa. Kalau pilihan itu
+  memengaruhi tingkat, tambahkan di `konfigurasi/tingkat.json` →
+  `ciriJawaban`. Kalau perlu poin di draf, tambahkan di
+  `konfigurasi/draf.json` → `poin.lanjutan`.
+- **Menambah pertanyaan lanjutan** untuk satu jenis — salin satu blok
+  pertanyaan di `"lanjutan"` → jenis yang dimaksud, lalu beri `id` baru:
+  - `"tipe"`: `"pilihan"` atau `"teks"`;
+  - `"wajib"`: `true` atau `false`;
+  - `"labelLaporan"`: label singkat di laporan Telegram.
+  Formulir otomatis menambah satu layar.
+- **Rentang anggaran dan pilihan waktu** — di bagian `"anggaran"` dan
+  `"waktu"`. Pilihan dengan `id` `"belum-tahu"` memicu pertanyaan di "hal
+  yang belum jelas".
+- **Batas panjang jawaban** — `"batasPanjang"` (pendek/sedang/panjang,
+  dalam karakter).
+
+Teks lain di halaman (judul, petunjuk, tombol, pesan galat, catatan privasi,
+dan pertanyaan tetap seperti "Ceritakan usahamu") ada di
+`src/lib/teks-titip.ts`.
+
+Setiap perubahan lewat pull request menjalankan tes. Tes memeriksa:
+
+- setiap pertanyaan punya tiga bahasa;
+- aturan dan draf tidak merujuk `id` yang tidak ada;
+- formulir masih bisa diisi sampai selesai di HP (tes end-to-end).
+
+## 12. Kalau ada masalah
+
+- **Formulir menampilkan "pesannya belum terkirim"**: buka
+  `<alamat-worker>/sehat`. Kalau `telegram` atau `turnstile` bernilai `false`,
+  rahasianya belum terpasang. Isi secret-nya (§2), lalu jalankan workflow
+  **Meja Depan** lagi.
+- **Klien selalu mendapat pesan anti-spam**: pastikan hostname
+  `mufuyumoku.github.io` terdaftar di widget Turnstile (§5).
+- **Laporan Telegram tidak masuk, surel masuk**: periksa `TELEGRAM_CHAT_ID`.
+  Kirim pesan ke bot dulu, lalu ulangi langkah §4.5.
+- **Surel tidak masuk**: periksa folder spam. Akun Resend harus didaftarkan
+  dengan `mufuyumoku@gmail.com` (§6).
+- **Pemasangan worker gagal**: buka tab **Actions** → run terakhir **Meja
+  Depan** → langkah yang merah. Pesan soal "workers.dev subdomain" berarti
+  langkah §3.2 belum dilakukan.
+- **Laporan tanpa bagian "dirapikan AI"**: itu wajar bila batas harian AI
+  tercapai atau AI sedang gagal; laporan tetap lengkap tanpa AI.

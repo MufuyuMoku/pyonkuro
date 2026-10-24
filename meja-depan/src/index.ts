@@ -30,8 +30,11 @@ export function asalDiizinkan(env: Env): string[] {
   return [...UMUM.asalDiizinkan, ...tambahan];
 }
 
+// Header yang selalu ikut: jawaban tidak disimpan cache dan tidak ditebak jenisnya.
+const HEADER_AMAN = { 'cache-control': 'no-store', 'x-content-type-options': 'nosniff' };
+
 function jawab(isi: unknown, status: number, asal: string | null): Response {
-  const headers: Record<string, string> = { 'content-type': 'application/json; charset=utf-8', vary: 'Origin' };
+  const headers: Record<string, string> = { 'content-type': 'application/json; charset=utf-8', vary: 'Origin', ...HEADER_AMAN };
   if (asal) headers['access-control-allow-origin'] = asal;
   return new Response(JSON.stringify(isi), { status, headers });
 }
@@ -154,6 +157,7 @@ export default {
             'access-control-allow-headers': 'content-type',
             'access-control-max-age': '86400',
             vary: 'Origin',
+            ...HEADER_AMAN,
           },
         });
       }
