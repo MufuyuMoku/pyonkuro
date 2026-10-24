@@ -1,24 +1,168 @@
 ---
 // Halaman Titip Ide (formulir Meja Depan). Dipakai oleh ketiga rute bahasa.
+// Semua layar dirender di sini; src/scripts/titip-ide.ts menampilkannya satu per satu.
 import Kerangka from './Kerangka.astro';
 import { JALUR, type Bahasa } from '../lib/teks';
 import { JALUR_TITIP, TEKS_TITIP } from '../lib/teks-titip';
-import umum from '../../meja-depan/konfigurasi/umum.json';
+import { ALAMAT_WORKER, TITIP_AKTIF } from '../lib/meja-depan';
+import { PERTANYAAN, batasMedan, type DaftarPilihan } from '../../meja-depan/src/formulir';
 
 interface Props { bahasa: Bahasa }
 const { bahasa } = Astro.props;
 const t = TEKS_TITIP[bahasa];
+const f = t.formulir;
+const batas = batasMedan();
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
-const aktif = umum.alamatWorker !== '';
+const beranda = `${BASE}${JALUR[bahasa]}`;
+
+const lanjutan = Object.entries(PERTANYAAN.lanjutan).flatMap(([jenis, daftar]) => daftar.map((p) => ({ jenis, ...p })));
+const pilihan = (nama: string, d: Pick<DaftarPilihan, 'pilihan'>) => d.pilihan.map((p) => ({ nama, id: p.id, label: p.label[bahasa] }));
+
+// Data untuk skrip di browser. "<" di-escape supaya isi JSON tidak bisa menutup tag <script>.
+const data = JSON.stringify({ bahasa, alamat: ALAMAT_WORKER, beranda, teks: { formulir: f, galat: t.galat, terima: t.terima } }).replace(/</g, '\\u003c');
 ---
 
 <Kerangka bahasa={bahasa} judul={t.judulTab} deskripsi={t.deskripsi} jalur={JALUR_TITIP}>
-  {!aktif && <meta slot="kepala" name="robots" content="noindex" />}
+  {!TITIP_AKTIF && <meta slot="kepala" name="robots" content="noindex" />}
   <section class="titip" aria-labelledby="judul-titip">
     <p class="judul-bagian"><svg viewBox="0 0 512 512" aria-hidden="true"><use href="#pyonkuro" /></svg>{t.label}</p>
     <h1 id="judul-titip" class="titip__judul">{t.judul}</h1>
     <p class="pengantar">{t.pengantar}</p>
-    {!aktif && <p class="titip__catatan">{t.belumAktif}</p>}
-    <p class="lanjut"><a class="tautan" href={`${BASE}${JALUR[bahasa]}`}>{t.kembali}</a></p>
+
+    {!TITIP_AKTIF && (
+      <>
+        <p class="titip__catatan">{t.belumAktif}</p>
+        <p class="lanjut"><a class="tautan" href={beranda}>{t.kembali}</a></p>
+      </>
+    )}
+
+    {TITIP_AKTIF && (
+      <>
+        <noscript><p class="titip__catatan">{t.noscript}</p></noscript>
+        <form id="titip" class="formulir" novalidate hidden>
+          <div class="formulir__kemajuan">
+            <span id="kemajuan-teks" aria-live="polite"></span>
+            <div class="formulir__bar" aria-hidden="true"><span id="kemajuan-isi"></span></div>
+          </div>
+
+          <fieldset class="layar" data-langkah="jenis" hidden>
+            <legend><span class="layar__tanya" tabindex="-1">{PERTANYAAN.jenis.pertanyaan[bahasa]}</span></legend>
+            <div class="pilihan">
+              {pilihan('jenis', PERTANYAAN.jenis).map((p) => (
+                <label class="pilihan__item"><input type="radio" name={p.nama} value={p.id} /><span>{p.label}</span></label>
+              ))}
+            </div>
+            <p class="layar__galat" data-galat="jenis" role="alert"></p>
+          </fieldset>
+
+          {(['usaha', 'masalah'] as const).map((m) => (
+            <div class="layar" data-langkah={m} hidden>
+              <label class="layar__tanya" for={`m-${m}`} tabindex="-1">{f[m].tanya}</label>
+              <p class="layar__petunjuk" id={`p-${m}`}>{f[m].petunjuk}</p>
+              <textarea id={`m-${m}`} name={m} rows="4" maxlength={batas[m]} aria-describedby={`p-${m} g-${m}`}></textarea>
+              <p class="layar__hitung" data-hitung={`m-${m}`} aria-hidden="true"></p>
+              <p class="layar__galat" id={`g-${m}`} data-galat={m} role="alert"></p>
+            </div>
+          ))}
+
+          {lanjutan.map((p) => p.tipe === 'pilihan' ? (
+            <fieldset class="layar" data-langkah={`lanjutan.${p.id}`} hidden>
+              <legend><span class="layar__tanya" tabindex="-1">{p.pertanyaan[bahasa]}</span></legend>
+              {p.petunjuk && <p class="layar__petunjuk">{p.petunjuk[bahasa]}</p>}
+              <div class="pilihan">
+                {pilihan(`lanjutan.${p.id}`, { pilihan: p.pilihan ?? [] }).map((o) => (
+                  <label class="pilihan__item"><input type="radio" name={o.nama} value={o.id} /><span>{o.label}</span></label>
+                ))}
+              </div>
+              <p class="layar__galat" data-galat={`lanjutan.${p.id}`} role="alert"></p>
+            </fieldset>
+          ) : (
+            <div class="layar" data-langkah={`lanjutan.${p.id}`} hidden>
+              <label class="layar__tanya" for={`m-l-${p.id}`} tabindex="-1">
+                {p.pertanyaan[bahasa]}{!p.wajib && <span class="layar__opsional"> ({f.opsional})</span>}
+              </label>
+              {p.petunjuk && <p class="layar__petunjuk" id={`p-l-${p.id}`}>{p.petunjuk[bahasa]}</p>}
+              <textarea id={`m-l-${p.id}`} name={`lanjutan.${p.id}`} rows="4" maxlength={batas.lanjutanTeks}
+                        aria-describedby={`p-l-${p.id} g-l-${p.id}`}></textarea>
+              <p class="layar__hitung" data-hitung={`m-l-${p.id}`} aria-hidden="true"></p>
+              <p class="layar__galat" id={`g-l-${p.id}`} data-galat={`lanjutan.${p.id}`} role="alert"></p>
+            </div>
+          ))}
+
+          <div class="layar" data-langkah="contoh" hidden>
+            <label class="layar__tanya" for="m-contoh" tabindex="-1">{f.contoh.tanya}<span class="layar__opsional"> ({f.opsional})</span></label>
+            <p class="layar__petunjuk" id="p-contoh">{f.contoh.petunjuk}</p>
+            <textarea id="m-contoh" name="contoh" rows="3" maxlength={batas.contoh} aria-describedby="p-contoh g-contoh"></textarea>
+            <p class="layar__hitung" data-hitung="m-contoh" aria-hidden="true"></p>
+            <p class="layar__galat" id="g-contoh" data-galat="contoh" role="alert"></p>
+          </div>
+
+          {(['waktu', 'anggaran'] as const).map((m) => (
+            <fieldset class="layar" data-langkah={m} hidden>
+              <legend><span class="layar__tanya" tabindex="-1">{PERTANYAAN[m].pertanyaan[bahasa]}</span></legend>
+              <div class="pilihan">
+                {pilihan(m, PERTANYAAN[m]).map((p) => (
+                  <label class="pilihan__item"><input type="radio" name={p.nama} value={p.id} /><span>{p.label}</span></label>
+                ))}
+              </div>
+              <p class="layar__galat" data-galat={m} role="alert"></p>
+            </fieldset>
+          ))}
+
+          <div class="layar" data-langkah="kontak" hidden>
+            <p class="layar__tanya" tabindex="-1">{f.kontak.tanya}</p>
+            <div class="medan">
+              <label for="m-nama">{f.kontak.nama}</label>
+              <input id="m-nama" name="nama" type="text" autocomplete="name" maxlength={batas.nama} aria-describedby="g-nama" />
+              <p class="layar__galat" id="g-nama" data-galat="nama" role="alert"></p>
+            </div>
+            <fieldset class="medan">
+              <legend>{f.kontak.lewat}</legend>
+              <div class="pilihan pilihan--sebaris">
+                <label class="pilihan__item"><input type="radio" name="kontakJenis" value="whatsapp" checked /><span>{f.kontak.whatsapp}</span></label>
+                <label class="pilihan__item"><input type="radio" name="kontakJenis" value="surel" /><span>{f.kontak.surel}</span></label>
+              </div>
+              <p class="layar__galat" data-galat="kontakJenis" role="alert"></p>
+            </fieldset>
+            <div class="medan">
+              <label for="m-kontak" id="l-kontak" data-wa={f.kontak.nomorWa} data-surel={f.kontak.alamatSurel}>{f.kontak.nomorWa}</label>
+              <p class="layar__petunjuk" id="p-kontak">{f.kontak.petunjukWa}</p>
+              <input id="m-kontak" name="kontak" type="tel" inputmode="tel" autocomplete="tel" maxlength={batas.kontak} aria-describedby="p-kontak g-kontak" />
+              <p class="layar__galat" id="g-kontak" data-galat="kontak" role="alert"></p>
+            </div>
+            <div class="medan">
+              <label for="m-namaUsaha">{f.kontak.namaUsaha}<span class="layar__opsional"> ({f.opsional})</span></label>
+              <input id="m-namaUsaha" name="namaUsaha" type="text" autocomplete="organization" maxlength={batas.namaUsaha} aria-describedby="g-namaUsaha" />
+              <p class="layar__galat" id="g-namaUsaha" data-galat="namaUsaha" role="alert"></p>
+            </div>
+          </div>
+
+          <div class="layar" data-langkah="ringkasan" hidden>
+            <h2 class="layar__tanya" tabindex="-1">{f.ringkasan.tanya}</h2>
+            <p class="layar__petunjuk">{f.ringkasan.petunjuk}</p>
+            <dl class="ringkasan" id="ringkasan-isi"></dl>
+            <p class="titip__privasi">{t.privasi}</p>
+            <p class="layar__galat" id="galat-kirim" role="alert"></p>
+          </div>
+
+          <div class="formulir__nav">
+            <button type="button" class="tombol tombol--kedua" id="tombol-kembali" hidden>{f.sebelumnya}</button>
+            <button type="submit" class="tombol" id="tombol-lanjut">{f.lanjut}</button>
+          </div>
+        </form>
+
+        <div id="terima" class="terima" hidden>
+          <h2 class="titip__judul terima__judul" id="terima-judul" tabindex="-1"></h2>
+          <p class="pengantar" id="terima-isi"></p>
+          <p class="lanjut"><a class="tautan" href={beranda}>{t.terima.kembali}</a></p>
+        </div>
+
+        <script type="application/json" id="data-titip" set:html={data} />
+      </>
+    )}
   </section>
+
+  <script>
+    import '../scripts/titip-ide';
+  </script>
 </Kerangka>

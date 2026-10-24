@@ -1,0 +1,191 @@
+{
+  "batasPanjang": {
+    "pendek": 120,
+    "sedang": 500,
+    "panjang": 1500
+  },
+  "jenis": {
+    "pertanyaan": {
+      "id": "Kamu mau dibuatkan apa?",
+      "en": "What would you like built?",
+      "ja": "何を作りたいですか？"
+    },
+    "pilihan": [
+      { "id": "situs", "label": { "id": "Situs web", "en": "A website", "ja": "ウェブサイト" } },
+      { "id": "toko", "label": { "id": "Toko online & transaksi", "en": "An online shop or transactions", "ja": "ネットショップ・決済" } },
+      { "id": "desktop", "label": { "id": "Aplikasi desktop", "en": "A desktop app", "ja": "デスクトップアプリ" } },
+      { "id": "hp", "label": { "id": "Aplikasi untuk HP", "en": "An app for phones", "ja": "スマホ向けアプリ" } },
+      { "id": "lainnya", "label": { "id": "Belum tahu / lainnya", "en": "Not sure yet / something else", "ja": "まだ決まっていない・その他" } }
+    ]
+  },
+  "lanjutan": {
+    "situs": [
+      {
+        "id": "halaman",
+        "tipe": "pilihan",
+        "wajib": true,
+        "pertanyaan": { "id": "Kira-kira berapa halaman?", "en": "Roughly how many pages?", "ja": "ページ数はどのくらいですか？" },
+        "pilihan": [
+          { "id": "1-3", "label": { "id": "1–3 halaman", "en": "1–3 pages", "ja": "1〜3ページ" } },
+          { "id": "4-10", "label": { "id": "4–10 halaman", "en": "4–10 pages", "ja": "4〜10ページ" } },
+          { "id": "lebih-10", "label": { "id": "Lebih dari 10", "en": "More than 10", "ja": "10ページより多い" } },
+          { "id": "belum-tahu", "label": { "id": "Belum tahu", "en": "Not sure yet", "ja": "まだわからない" } }
+        ]
+      },
+      {
+        "id": "ubahIsi",
+        "tipe": "pilihan",
+        "wajib": true,
+        "pertanyaan": { "id": "Nanti isinya diubah siapa?", "en": "Who will update the content later?", "ja": "公開後の内容は誰が更新しますか？" },
+        "pilihan": [
+          { "id": "jarang", "label": { "id": "Jarang berubah, dibuatkan saja", "en": "It rarely changes, just build it", "ja": "ほとんど変わらないので、作ってもらえれば十分" } },
+          { "id": "sendiri", "label": { "id": "Saya ingin bisa mengubahnya sendiri", "en": "I want to update it myself", "ja": "自分で更新できるようにしたい" } },
+          { "id": "belum-tahu", "label": { "id": "Belum tahu", "en": "Not sure yet", "ja": "まだわからない" } }
+        ]
+      },
+      {
+        "id": "login",
+        "tipe": "pilihan",
+        "wajib": true,
+        "pertanyaan": { "id": "Pengunjung perlu punya akun atau login?", "en": "Do visitors need an account or login?", "ja": "訪問者のアカウントやログインは必要ですか？" },
+        "pilihan": [
+          { "id": "tidak", "label": { "id": "Tidak", "en": "No", "ja": "不要" } },
+          { "id": "ya", "label": { "id": "Ya", "en": "Yes", "ja": "必要" } },
+          { "id": "belum-tahu", "label": { "id": "Belum tahu", "en": "Not sure yet", "ja": "まだわからない" } }
+        ]
+      }
+    ],
+    "toko": [
+      {
+        "id": "produk",
+        "tipe": "pilihan",
+        "wajib": true,
+        "pertanyaan": { "id": "Kira-kira ada berapa jenis produk?", "en": "Roughly how many products?", "ja": "商品の種類はどのくらいですか？" },
+        "pilihan": [
+          { "id": "kurang-20", "label": { "id": "Kurang dari 20", "en": "Fewer than 20", "ja": "20未満" } },
+          { "id": "20-100", "label": { "id": "20–100", "en": "20–100", "ja": "20〜100" } },
+          { "id": "lebih-100", "label": { "id": "Lebih dari 100", "en": "More than 100", "ja": "100より多い" } },
+          { "id": "belum-tahu", "label": { "id": "Belum tahu", "en": "Not sure yet", "ja": "まだわからない" } }
+        ]
+      },
+      {
+        "id": "bayar",
+        "tipe": "pilihan",
+        "wajib": true,
+        "pertanyaan": { "id": "Perlu pembayaran online (mis. QRIS)?", "en": "Do you need online payment (e.g. QRIS)?", "ja": "オンライン決済（QRIS など）は必要ですか？" },
+        "pilihan": [
+          { "id": "ya", "label": { "id": "Ya, pembeli langsung bayar di situs", "en": "Yes, buyers pay on the site", "ja": "はい、サイト上で支払ってもらいたい" } },
+          { "id": "tidak", "label": { "id": "Tidak, cukup pesan lalu transfer atau bayar di tempat", "en": "No, they order and then pay by transfer or on delivery", "ja": "いいえ、注文後に振込や代引きで十分" } },
+          { "id": "belum-tahu", "label": { "id": "Belum tahu", "en": "Not sure yet", "ja": "まだわからない" } }
+        ]
+      },
+      {
+        "id": "pengurus",
+        "tipe": "pilihan",
+        "wajib": true,
+        "pertanyaan": { "id": "Siapa yang mengurus pesanan?", "en": "Who handles the orders?", "ja": "注文は誰が管理しますか？" },
+        "pilihan": [
+          { "id": "sendiri", "label": { "id": "Saya sendiri", "en": "Just me", "ja": "自分ひとり" } },
+          { "id": "tim", "label": { "id": "Beberapa orang, dengan tugas berbeda", "en": "A few people with different roles", "ja": "役割の違う複数人" } },
+          { "id": "belum-tahu", "label": { "id": "Belum tahu", "en": "Not sure yet", "ja": "まだわからない" } }
+        ]
+      }
+    ],
+    "desktop": [
+      {
+        "id": "sistem",
+        "tipe": "pilihan",
+        "wajib": true,
+        "pertanyaan": { "id": "Dipakai di komputer apa?", "en": "Which computers will it run on?", "ja": "どのパソコンで使いますか？" },
+        "pilihan": [
+          { "id": "windows", "label": { "id": "Windows", "en": "Windows", "ja": "Windows" } },
+          { "id": "linux", "label": { "id": "Linux", "en": "Linux", "ja": "Linux" } },
+          { "id": "keduanya", "label": { "id": "Windows dan Linux", "en": "Windows and Linux", "ja": "Windows と Linux の両方" } },
+          { "id": "belum-tahu", "label": { "id": "Belum tahu", "en": "Not sure yet", "ja": "まだわからない" } }
+        ]
+      },
+      {
+        "id": "pengguna",
+        "tipe": "pilihan",
+        "wajib": true,
+        "pertanyaan": { "id": "Siapa yang memakainya?", "en": "Who will use it?", "ja": "誰が使いますか？" },
+        "pilihan": [
+          { "id": "sendiri", "label": { "id": "Saya sendiri", "en": "Just me", "ja": "自分ひとり" } },
+          { "id": "beberapa", "label": { "id": "Beberapa orang, data sama", "en": "A few people sharing the same data", "ja": "同じデータを使う数人" } },
+          { "id": "peran", "label": { "id": "Banyak orang dengan hak akses berbeda", "en": "Many people with different access levels", "ja": "権限の違う大勢" } },
+          { "id": "belum-tahu", "label": { "id": "Belum tahu", "en": "Not sure yet", "ja": "まだわからない" } }
+        ]
+      },
+      {
+        "id": "pekerjaan",
+        "tipe": "teks",
+        "wajib": false,
+        "pertanyaan": { "id": "Pekerjaan apa yang paling sering dilakukan dengan aplikasinya?", "en": "What will you do with the app most often?", "ja": "アプリで一番よく行う作業は何ですか？" },
+        "petunjuk": { "id": "Mis. mencatat stok harian, mencetak nota, mengelola daftar musik.", "en": "E.g. logging daily stock, printing receipts, managing a music library.", "ja": "例：毎日の在庫記録、レシートの印刷、音楽ライブラリの管理など。" }
+      }
+    ],
+    "hp": [
+      {
+        "id": "pemakai",
+        "tipe": "pilihan",
+        "wajib": true,
+        "pertanyaan": { "id": "Siapa yang memakai aplikasinya?", "en": "Who will use the app?", "ja": "アプリは誰が使いますか？" },
+        "pilihan": [
+          { "id": "internal", "label": { "id": "Saya atau tim sendiri", "en": "Me or my own team", "ja": "自分やチーム内" } },
+          { "id": "pelanggan", "label": { "id": "Pelanggan saya", "en": "My customers", "ja": "お客さま" } },
+          { "id": "belum-tahu", "label": { "id": "Belum tahu", "en": "Not sure yet", "ja": "まだわからない" } }
+        ]
+      },
+      {
+        "id": "akun",
+        "tipe": "pilihan",
+        "wajib": true,
+        "pertanyaan": { "id": "Pemakai perlu punya akun atau login?", "en": "Do users need an account or login?", "ja": "利用者のアカウントやログインは必要ですか？" },
+        "pilihan": [
+          { "id": "tidak", "label": { "id": "Tidak", "en": "No", "ja": "不要" } },
+          { "id": "ya", "label": { "id": "Ya", "en": "Yes", "ja": "必要" } },
+          { "id": "belum-tahu", "label": { "id": "Belum tahu", "en": "Not sure yet", "ja": "まだわからない" } }
+        ]
+      },
+      {
+        "id": "luring",
+        "tipe": "pilihan",
+        "wajib": true,
+        "pertanyaan": { "id": "Perlu tetap bisa dipakai tanpa internet?", "en": "Does it need to work without internet?", "ja": "インターネットなしでも使える必要がありますか？" },
+        "pilihan": [
+          { "id": "ya", "label": { "id": "Ya", "en": "Yes", "ja": "はい" } },
+          { "id": "tidak", "label": { "id": "Tidak", "en": "No", "ja": "いいえ" } },
+          { "id": "belum-tahu", "label": { "id": "Belum tahu", "en": "Not sure yet", "ja": "まだわからない" } }
+        ]
+      }
+    ],
+    "lainnya": [
+      {
+        "id": "bayangan",
+        "tipe": "teks",
+        "wajib": true,
+        "pertanyaan": { "id": "Ceritakan sedikit apa yang kamu bayangkan.", "en": "Tell me a little about what you have in mind.", "ja": "思い描いているものを少し教えてください。" },
+        "petunjuk": { "id": "Tidak perlu istilah teknis. Mis. \"alat untuk mencatat jadwal les murid\".", "en": "No technical terms needed. E.g. \"a tool to keep track of my students' lesson schedule\".", "ja": "専門用語は不要です。例：「生徒のレッスン日程を管理する道具」。" }
+      }
+    ]
+  },
+  "waktu": {
+    "pertanyaan": { "id": "Kapan kira-kira dibutuhkan?", "en": "When do you need it, roughly?", "ja": "いつ頃までに必要ですか？" },
+    "pilihan": [
+      { "id": "secepatnya", "label": { "id": "Secepatnya", "en": "As soon as possible", "ja": "できるだけ早く" } },
+      { "id": "1-bulan", "label": { "id": "Dalam 1 bulan", "en": "Within a month", "ja": "1か月以内" } },
+      { "id": "2-3-bulan", "label": { "id": "Dalam 2–3 bulan", "en": "In 2–3 months", "ja": "2〜3か月以内" } },
+      { "id": "fleksibel", "label": { "id": "Fleksibel", "en": "Flexible", "ja": "時期は柔軟" } }
+    ]
+  },
+  "anggaran": {
+    "pertanyaan": { "id": "Kisaran anggarannya?", "en": "What's your budget range?", "ja": "ご予算の目安は？" },
+    "pilihan": [
+      { "id": "kurang-1jt", "label": { "id": "Di bawah Rp1 juta", "en": "Under Rp1 million", "ja": "100万ルピア未満" } },
+      { "id": "1-3jt", "label": { "id": "Rp1–3 juta", "en": "Rp1–3 million", "ja": "100万〜300万ルピア" } },
+      { "id": "3-7jt", "label": { "id": "Rp3–7 juta", "en": "Rp3–7 million", "ja": "300万〜700万ルピア" } },
+      { "id": "lebih-7jt", "label": { "id": "Di atas Rp7 juta", "en": "Over Rp7 million", "ja": "700万ルピア超" } },
+      { "id": "belum-tahu", "label": { "id": "Belum tahu", "en": "Not sure yet", "ja": "まだわからない" } }
+    ]
+  }
+}

@@ -98,3 +98,47 @@ terverifikasi, Resend hanya mengirim ke alamat pemilik akun, jadi akun Resend
 harus didaftarkan dengan `mufuyumoku@gmail.com`. Ini cukup karena surel hanya
 untuk pemilik. Kalau kelak punya domain sendiri, alamat pengirim bisa diganti
 di konfigurasi.
+
+## D10 — Isi catatan privasi (perlu persetujuan pemilik)
+
+Catatan privasi di layar ringkasan menyebut:
+
+- data yang dikirim: jawaban, nama, dan kontak;
+- tujuannya: untuk membalas;
+- formulir/worker tidak menyimpan data; data diteruskan ke Telegram dan surel
+  pemilik;
+- data **dihapus paling lambat 90 hari setelah percakapan selesai**, atau lebih
+  cepat bila diminta.
+
+Angka 90 hari mengikuti bawaan SPEC §4. Ini janji yang harus ditepati pemilik
+secara manual di Telegram dan surel. Kalau tidak cocok, ubah kalimatnya di
+`src/lib/teks-titip.ts` (`privasi`). Resend juga menyimpan log surel terkirim
+di dasbornya untuk sementara waktu.
+
+## D11 — Satu pertanyaan per layar, termasuk pertanyaan lanjutan
+
+SPEC §5 menulis pertanyaan lanjutan sebagai satu nomor (4). Supaya tetap
+"satu pertanyaan per layar", tiap pertanyaan lanjutan mendapat layarnya
+sendiri. Jumlah langkah karena itu bergantung pada jenis (8–11), dan
+indikator kemajuan menghitung ulang setelah jenis dipilih.
+
+Draf jawaban disimpan di `sessionStorage` (hanya tab itu, di perangkat klien)
+supaya tidak hilang kalau halaman tak sengaja dimuat ulang. Draf dihapus
+setelah terkirim.
+
+## D12 — Nomor WhatsApp
+
+Nomor diterima bila berisi 8–15 angka (boleh diawali "+"). Untuk tautan cepat
+wa.me di laporan:
+
+- nomor berawalan "+" atau "62" dipakai apa adanya;
+- nomor lokal "08…" diubah ke "628…" hanya bila formulirnya berbahasa
+  Indonesia;
+- nomor lain ditampilkan apa adanya tanpa tautan, supaya tidak menebak kode
+  negara yang salah.
+
+## D13 — Menimpa alamat worker saat build
+
+Variabel lingkungan `MEJA_DEPAN_URL` saat `npm run build` menimpa
+`alamatWorker`. Ini hanya untuk pengujian lokal (mis. formulir diarahkan ke
+worker tiruan). Situs produksi memakai nilai di `konfigurasi/umum.json`.

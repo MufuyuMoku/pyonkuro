@@ -234,3 +234,83 @@
     color: var(--ink-dim);
     max-width: 38rem;
   }
+
+  /* Tombol utama (emas) dan kedua (garis) — dipakai formulir dan ajakan "Titip ide". */
+  .tombol {
+    display: inline-block;
+    font-family: var(--f-mono); font-size: 0.875rem; letter-spacing: 0.06em; text-decoration: none;
+    background: var(--gold); color: var(--chip); border: 1px solid var(--gold);
+    padding: 0.85rem 1.4rem; cursor: pointer; transition: background .2s, color .2s, border-color .2s;
+  }
+  .tombol:hover { background: var(--ink); border-color: var(--ink); }
+  .tombol:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+  .tombol:disabled { opacity: 0.6; cursor: progress; }
+  .tombol--kedua { background: transparent; color: var(--ink); border-color: var(--gold-soft); }
+  .tombol--kedua:hover { background: transparent; color: var(--gold); border-color: var(--gold); }
+  html:lang(ja) .tombol { font-family: var(--f-body); letter-spacing: 0.04em; }
+  .ajak { margin: 1.25rem 0 0; }
+
+  /* Formulir bertahap */
+  .formulir { margin-top: 2.25rem; max-width: 40rem; }
+  .formulir__kemajuan { font-family: var(--f-mono); font-size: 0.75rem; letter-spacing: 0.08em; color: var(--ink-faint); }
+  html:lang(ja) .formulir__kemajuan { font-family: var(--f-body); }
+  .formulir__bar { height: 3px; background: var(--gold-soft); margin-top: 0.5rem; }
+  .formulir__bar span { display: block; height: 100%; width: 0; background: var(--gold); transition: width .3s; }
+  .layar { border: 0; padding: 0; margin: 2rem 0 0; min-width: 0; }
+  .layar[hidden] { display: none; }
+  .layar legend { padding: 0; width: 100%; }
+  .layar__tanya {
+    display: block; font-family: var(--f-display); font-weight: 700;
+    font-size: clamp(1.35rem, 4vw, 1.75rem); line-height: 1.2; letter-spacing: -0.01em; margin: 0;
+  }
+  .layar__tanya:focus { outline: none; }
+  .layar__tanya:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
+  html:lang(ja) .layar__tanya { font-family: var(--f-body); letter-spacing: 0; }
+  .layar__opsional { font-family: var(--f-body); font-weight: 400; font-size: 0.9375rem; color: var(--ink-faint); }
+  .layar__petunjuk { color: var(--ink-dim); font-size: 0.9375rem; margin: 0.5rem 0 0; }
+  .layar__petunjuk[hidden] { display: none; }
+  .layar__hitung { margin: 0.35rem 0 0; text-align: right; font-family: var(--f-mono); font-size: 0.6875rem; color: var(--ink-faint); }
+  .layar__galat { margin: 0.5rem 0 0; color: #e8a27c; font-size: 0.9375rem; }
+  .layar__galat:empty { display: none; }
+
+  .pilihan { display: grid; gap: 0.5rem; margin-top: 1.25rem; }
+  .pilihan--sebaris { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 0.5rem; }
+  .pilihan__item {
+    display: flex; align-items: center; gap: 0.85rem; padding: 0.9rem 1rem;
+    border: 1px solid var(--gold-soft); background: var(--felt-2); cursor: pointer;
+    transition: border-color .2s, background .2s;
+  }
+  .pilihan__item:hover { border-color: var(--gold); }
+  .pilihan__item:has(input:checked) { border-color: var(--gold); background: rgba(201, 162, 77, 0.1); }
+  .pilihan__item:has(input:focus-visible) { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .pilihan__item input { accent-color: var(--gold); width: 1.1rem; height: 1.1rem; margin: 0; flex: none; }
+
+  .formulir textarea, .formulir input[type="text"], .formulir input[type="tel"], .formulir input[type="email"] {
+    display: block; width: 100%; margin-top: 1rem; padding: 0.8rem 0.9rem;
+    font: inherit; font-size: 1rem; color: var(--ink); background: var(--felt-2);
+    border: 1px solid var(--gold-soft); border-radius: 0; resize: vertical;
+  }
+  .formulir textarea:focus, .formulir input:focus { outline: 2px solid var(--gold); outline-offset: 1px; border-color: var(--gold); }
+  .formulir [aria-invalid="true"] { border-color: #e8a27c; }
+  .medan { border: 0; padding: 0; margin: 1.5rem 0 0; min-width: 0; }
+  .medan > label, .medan > legend { font-size: 0.9375rem; color: var(--ink); padding: 0; }
+  .medan input { margin-top: 0.5rem !important; }
+
+  .formulir__nav { display: flex; gap: 0.75rem; justify-content: space-between; margin-top: 2rem; }
+  .formulir__nav .tombol[hidden] { display: none; }
+  .formulir__nav #tombol-lanjut { margin-left: auto; }
+
+  .ringkasan { margin: 1.5rem 0 0; border-top: 1px solid var(--gold-soft); }
+  .ringkasan > div { padding: 0.85rem 0; border-bottom: 1px solid var(--gold-soft); }
+  .ringkasan dt { font-family: var(--f-mono); font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); }
+  html:lang(ja) .ringkasan dt { font-family: var(--f-body); letter-spacing: 0.04em; font-size: 0.8125rem; }
+  .ringkasan dd { margin: 0.25rem 0 0; display: flex; gap: 1rem; align-items: baseline; justify-content: space-between; }
+  .ringkasan dd span { white-space: pre-line; overflow-wrap: anywhere; min-width: 0; }
+  .ringkasan__ubah {
+    flex: none; background: none; border: 0; padding: 0.25rem 0; cursor: pointer;
+    font-family: var(--f-mono); font-size: 0.75rem; color: var(--gold); text-decoration: underline; text-underline-offset: 3px;
+  }
+  .ringkasan__ubah:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .titip__privasi { margin: 1.5rem 0 0; font-size: 0.8125rem; color: var(--ink-faint); line-height: 1.7; }
+  .terima { margin-top: 2.25rem; }
+  .terima__judul:focus { outline: none; }

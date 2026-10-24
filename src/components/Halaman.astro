@@ -2,11 +2,14 @@
 // Halaman utama. Dipakai oleh ketiga rute bahasa; teksnya dari src/lib/teks.ts.
 import Kerangka from './Kerangka.astro';
 import { TEKS, JALUR, PORTOFOLIO, type Bahasa } from '../lib/teks';
+import { JALUR_TITIP, TEKS_TITIP } from '../lib/teks-titip';
+import { TITIP_AKTIF } from '../lib/meja-depan';
 
 interface Props { bahasa: Bahasa }
 const { bahasa } = Astro.props;
 const t = TEKS[bahasa];
 const surel = 'mufuyumoku@gmail.com';
+const titipIde = `${import.meta.env.BASE_URL.replace(/\/$/, '')}${JALUR_TITIP[bahasa]}`;
 ---
 
 <Kerangka bahasa={bahasa} judul={t.judulTab} deskripsi={t.deskripsi} jalur={JALUR}>
@@ -60,6 +63,7 @@ const surel = 'mufuyumoku@gmail.com';
       ))}
     </ul>
     <p class="catatan-harga">{t.jasa.harga}</p>
+    {TITIP_AKTIF && <p class="ajak"><a class="tombol" href={titipIde}>{TEKS_TITIP[bahasa].tombol}</a></p>}
   </section>
 
   <section id="cara" aria-labelledby="judul-cara">
@@ -87,6 +91,7 @@ const surel = 'mufuyumoku@gmail.com';
         <div><dt>{t.kontak.portofolio}</dt><dd><a class="tautan" href={PORTOFOLIO[bahasa]}>{PORTOFOLIO[bahasa].replace('https://', '').replace(/\/$/, '')}</a></dd></div>
       </dl>
     </div>
+    {TITIP_AKTIF && <p class="ajak"><a class="tombol tombol--kedua" href={titipIde}>{TEKS_TITIP[bahasa].tombol}</a></p>}
   </section>
 
   <script>
