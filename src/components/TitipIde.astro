@@ -1,0 +1,24 @@
+---
+// Halaman Titip Ide (formulir Meja Depan). Dipakai oleh ketiga rute bahasa.
+import Kerangka from './Kerangka.astro';
+import { JALUR, type Bahasa } from '../lib/teks';
+import { JALUR_TITIP, TEKS_TITIP } from '../lib/teks-titip';
+import umum from '../../meja-depan/konfigurasi/umum.json';
+
+interface Props { bahasa: Bahasa }
+const { bahasa } = Astro.props;
+const t = TEKS_TITIP[bahasa];
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+const aktif = umum.alamatWorker !== '';
+---
+
+<Kerangka bahasa={bahasa} judul={t.judulTab} deskripsi={t.deskripsi} jalur={JALUR_TITIP}>
+  {!aktif && <meta slot="kepala" name="robots" content="noindex" />}
+  <section class="titip" aria-labelledby="judul-titip">
+    <p class="judul-bagian"><svg viewBox="0 0 512 512" aria-hidden="true"><use href="#pyonkuro" /></svg>{t.label}</p>
+    <h1 id="judul-titip" class="titip__judul">{t.judul}</h1>
+    <p class="pengantar">{t.pengantar}</p>
+    {!aktif && <p class="titip__catatan">{t.belumAktif}</p>}
+    <p class="lanjut"><a class="tautan" href={`${BASE}${JALUR[bahasa]}`}>{t.kembali}</a></p>
+  </section>
+</Kerangka>

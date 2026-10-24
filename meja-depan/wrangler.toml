@@ -1,0 +1,10 @@
+# Worker Meja Depan. Dipasang oleh .github/workflows/meja-depan.yml;
+# rahasia dipasang dari GitHub repository secrets, tidak pernah ditulis di sini.
+name = "meja-depan"
+main = "src/index.ts"
+compatibility_date = "2026-10-01"
+workers_dev = true
+
+# Tanpa penyimpanan log permintaan di Cloudflare (data klien seminimal mungkin).
+[observability]
+enabled = false

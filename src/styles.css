@@ -212,3 +212,25 @@
   :lang(ja) { line-break: strict; word-break: auto-phrase; }
   html:lang(ja) h2, html:lang(ja) .jasa h3, html:lang(ja) .langkah b { font-family: var(--f-body); font-weight: 700; letter-spacing: 0; }
   html:lang(ja) .judul-bagian { letter-spacing: 0.12em; font-family: var(--f-body); }
+
+  /* --- Titip Ide ------------------------------------------------------ */
+  .titip { padding-top: clamp(2.5rem, 7vw, 4.5rem); }
+  .titip__judul {
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: clamp(2rem, 6vw, 3.2rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 0;
+    max-width: 20ch;
+    text-wrap: balance;
+  }
+  html:lang(ja) .titip__judul { font-family: var(--f-body); letter-spacing: 0; }
+  .titip__catatan {
+    margin: 1.75rem 0 0;
+    padding: 1rem 1.2rem;
+    border: 1px solid var(--gold-soft);
+    background: var(--felt-2);
+    color: var(--ink-dim);
+    max-width: 38rem;
+  }
