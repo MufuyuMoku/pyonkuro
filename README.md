@@ -27,3 +27,10 @@ npm run dev
 Setiap push ke `main` dibangun dan dipasang oleh
 `.github/workflows/deploy.yml`. Setelan repo → Pages → Source harus
 **GitHub Actions**.
+
+## Meja Depan (formulir Titip Ide)
+
+Halaman formulir ada di `src/components/TitipIde.astro` (`/titip-ide/` dan
+padanannya per bahasa). Worker penerima kiriman, konfigurasi pertanyaan, dan
+panduan pemilik (rahasia, Telegram, Cloudflare, Resend) ada di
+[`meja-depan/`](meja-depan/README.md). Spesifikasi: `SPEC-meja-depan.md`.
