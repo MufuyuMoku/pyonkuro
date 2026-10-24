@@ -163,6 +163,17 @@ describe('kiriman', () => {
     expect([...env.penyimpanan.data.keys()].join()).not.toContain('203.0.113.7');
   });
 
+  it('worker tidak menyimpan jawaban klien: penyimpanan hanya berisi hash IP dan cap waktu', async () => {
+    const env = buatEnv();
+    await kirim(sah({ nama: 'Sari Unik', masalah: 'Masalah-rahasia-123', kontak: '0812-9999-0000' }), env);
+    const isi = JSON.stringify([...env.penyimpanan.data]);
+    for (const jejak of ['Sari Unik', 'Masalah-rahasia-123', '0812', '203.0.113.7']) expect(isi).not.toContain(jejak);
+    for (const [kunci, nilai] of env.penyimpanan.data) {
+      expect(kunci).toMatch(/^(ip:[0-9a-f]{32}|ai:\d{4}-\d{2}-\d{2})$/);
+      expect((nilai as unknown[]).every((t) => typeof t === 'number')).toBe(true);
+    }
+  });
+
   it('surel gagal: Telegram tetap terkirim dan klien mendapat ok', async () => {
     jawabResend = () => new Response('err', { status: 500 });
     const res = await kirim(sah());
