@@ -2,5 +2,7 @@
   "alamatWorker": "",
   "turnstileSiteKey": "0x4AAAAAAFjWJh9rejLeYSew",
   "asalDiizinkan": ["https://mufuyumoku.github.io"],
-  "surelPemilik": "mufuyumoku@gmail.com"
+  "surelPemilik": "mufuyumoku@gmail.com",
+  "pengirimSurel": "Meja Depan Pyonkuro <onboarding@resend.dev>",
+  "batasKiriman": { "jumlah": 5, "jendelaMenit": 60 }
 }

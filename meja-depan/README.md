@@ -107,11 +107,14 @@ kiriman pertama dan tandai "bukan spam".
    yang masuk ke `main`.
 2. Kalau berhasil, langkah **Pasang worker** di log menampilkan alamat seperti
    `https://meja-depan.<subdomain>.workers.dev`. Cek dengan membuka
-   `<alamat>/sehat` di browser: harus muncul `{"ok":true,...}`.
+   `<alamat>/sehat` di browser. Harus muncul `{"ok":true,...}` dengan
+   `"siap"` yang menunjukkan rahasia mana yang sudah terpasang. `telegram`
+   dan `turnstile` harus `true`; `surel` `true` bila `RESEND_API_KEY` diisi.
 3. Buka `meja-depan/konfigurasi/umum.json`, isi `"alamatWorker"` dengan alamat
    itu (tanpa garis miring di akhir), lalu commit ke `main`.
-4. Situs dibangun ulang otomatis. Selama `alamatWorker` masih kosong,
-   formulir tidak aktif, tombol "Titip ide" tidak muncul di halaman utama, dan
+4. Situs dibangun ulang otomatis. Coba isi formulir sekali dari HP; laporan
+   harus masuk ke Telegram (dan surel) dalam beberapa detik.
+5. Selama `alamatWorker` masih kosong, formulir tidak aktif, tombol "Titip ide" tidak muncul di halaman utama, dan
    halaman formulir tidak diindeks mesin pencari.
 
 ## 8. Mencoba di komputer sendiri (opsional)
@@ -120,6 +123,7 @@ kiriman pertama dan tandai "bukan spam".
 cd meja-depan
 npm install
 cp .env.example .dev.vars   # lalu isi nilainya di .dev.vars (berkas ini diabaikan git)
+                            # tambahkan ASAL_TAMBAHAN=http://localhost:4321 agar situs lokal boleh mengirim
 npm run dev                 # worker jalan di http://localhost:8787
 npm test                    # menjalankan tes
 ```

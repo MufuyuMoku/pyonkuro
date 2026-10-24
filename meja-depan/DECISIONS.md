@@ -142,3 +142,50 @@ wa.me di laporan:
 Variabel lingkungan `MEJA_DEPAN_URL` saat `npm run build` menimpa
 `alamatWorker`. Ini hanya untuk pengujian lokal (mis. formulir diarahkan ke
 worker tiruan). Situs produksi memakai nilai di `konfigurasi/umum.json`.
+
+## D14 — Batas kiriman per IP dengan Durable Object
+
+Batas kiriman (bawaan 5 per IP per jam, di `konfigurasi/umum.json` →
+`batasKiriman`) dan nanti batas AI harian dihitung oleh satu Durable Object
+berbasis SQLite (`Penghitung`).
+
+Dipilih karena:
+
+- tersedia di paket gratis;
+- hitungannya konsisten (KV bisa terlambat sinkron);
+- tidak perlu dibuat manual: cukup migrasi di `wrangler.toml`.
+
+Yang disimpan hanya hash SHA-256 IP (dipotong) dan cap waktu. Alarm harian
+membuang catatan yang lebih dari sehari. Isi kiriman tidak pernah disimpan,
+jadi masa simpan 90 hari (SPEC §4) tidak berlaku untuk worker.
+
+Hitungan hanya bertambah setelah validasi dan Turnstile lolos. Dengan begitu
+bot yang gagal captcha tidak menghabiskan jatah orang lain di jaringan yang
+sama.
+
+## D15 — Format laporan Telegram
+
+- Memakai `parse_mode: HTML`. Semua teks klien di-escape.
+- Teks bebas klien (usaha, masalah, contoh, lanjutan teks) selalu di dalam
+  `<blockquote>`, supaya isian seperti "Tingkat: Kecil" atau "Sudah dibayar"
+  jelas terbaca sebagai tulisan klien, bukan bagian laporan.
+- Pratinjau tautan dimatikan. URL yang ditulis klien tetap tampil apa adanya
+  (teks = tujuan), jadi tidak ada tautan tersamar.
+- Batas 4096 karakter: teks klien dipotong di Telegram (versi utuh ada di
+  surel). Kalau HTML-nya tetap terlalu panjang atau ditolak Telegram, dikirim
+  versi teks polos.
+- Setiap laporan punya kode acak 6 huruf (#ABC123) di Telegram dan subjek
+  surel, untuk mencocokkan keduanya.
+- Telegram tidak mengizinkan tombol `mailto:`. Untuk kontak surel, alamatnya
+  tampil sebagai teks (Telegram membuatnya bisa diketuk). Surel laporan memakai
+  alamat klien sebagai `reply_to`, jadi "Balas" langsung ke klien.
+
+## D16 — Kapan klien melihat galat
+
+- `/kirim` menjawab **503** bila `TURNSTILE_SECRET_KEY`, `TELEGRAM_BOT_TOKEN`,
+  atau `TELEGRAM_CHAT_ID` belum ada. Formulir tidak menerima kiriman tanpa
+  anti-spam dan saluran utama.
+- Bila salah satu dari Telegram atau surel berhasil, klien mendapat "terima
+  kasih". Galat 502 hanya bila keduanya gagal.
+- Galat saluran dicatat dengan `console.error` tanpa isi kiriman. Log hanya
+  terlihat lewat `wrangler tail`, karena observability dimatikan (D8).

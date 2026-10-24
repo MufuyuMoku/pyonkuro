@@ -314,3 +314,7 @@
   .titip__privasi { margin: 1.5rem 0 0; font-size: 0.8125rem; color: var(--ink-faint); line-height: 1.7; }
   .terima { margin-top: 2.25rem; }
   .terima__judul:focus { outline: none; }
+  .titip__turnstile { margin-top: 1.25rem; }
+  .titip__turnstile:empty { display: none; }
+  /* Kolom jebakan bot: tersembunyi dari manusia dan pembaca layar. */
+  .jebakan { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }

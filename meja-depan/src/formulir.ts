@@ -12,6 +12,7 @@ export type PertanyaanLanjutan = {
   id: string;
   tipe: 'pilihan' | 'teks';
   wajib: boolean;
+  labelLaporan: string; // label singkat di laporan untuk pemilik
   pertanyaan: Teks3;
   petunjuk?: Teks3;
   pilihan?: Pilihan[];

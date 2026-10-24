@@ -8,3 +8,13 @@ workers_dev = true
 # Tanpa penyimpanan log permintaan di Cloudflare (data klien seminimal mungkin).
 [observability]
 enabled = false
+
+# Penghitung batas kiriman per IP (dan batas AI harian). Durable Object berbasis
+# SQLite tersedia di paket gratis dan tidak perlu dibuat manual.
+[[durable_objects.bindings]]
+name = "PENGHITUNG"
+class_name = "Penghitung"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Penghitung"]

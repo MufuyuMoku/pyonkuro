@@ -6,17 +6,26 @@ import type { TeksTitip } from '../lib/teks-titip';
 type Data = {
   bahasa: Bahasa;
   alamat: string;
+  turnstile: string; // site key
   beranda: string;
   teks: Pick<TeksTitip, 'formulir' | 'galat' | 'terima'>;
 };
 
 const SIMPANAN = 'titip-ide-draf';
 
+// API Cloudflare Turnstile (dimuat dengan render=explicit).
+type Turnstile = {
+  render(el: HTMLElement, opsi: Record<string, unknown>): string;
+  reset(id: string): void;
+};
+declare global { interface Window { turnstile?: Turnstile } }
+const jeda = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
 const form = document.getElementById('titip') as HTMLFormElement | null;
 const dataEl = document.getElementById('data-titip');
 if (form && dataEl) mulai(form, JSON.parse(dataEl.textContent ?? '{}') as Data);
 
-function mulai(form: HTMLFormElement, { bahasa, alamat, teks }: Data) {
+function mulai(form: HTMLFormElement, { bahasa, alamat, turnstile, teks }: Data) {
   const f = teks.formulir;
   const g = teks.galat;
   const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
@@ -27,6 +36,31 @@ function mulai(form: HTMLFormElement, { bahasa, alamat, teks }: Data) {
 
   let urutan = daftarLangkah('');
   let posisi = 0;
+
+  // --- Turnstile (anti-spam) -------------------------------------------------
+  // Widget dipasang saat layar ringkasan pertama kali tampil. Tokennya sekali pakai.
+  let widget: string | null = null;
+  let token = '';
+  function pasangTurnstile() {
+    if (widget !== null || !window.turnstile) return;
+    widget = window.turnstile.render($('turnstile'), {
+      sitekey: turnstile,
+      language: bahasa,
+      theme: 'dark',
+      appearance: 'interaction-only',
+      callback: (t: string) => { token = t; },
+      'expired-callback': () => { token = ''; },
+      'error-callback': () => { token = ''; },
+    });
+  }
+  async function ambilToken(): Promise<string> {
+    for (let i = 0; i < 60 && !token; i++) { pasangTurnstile(); await jeda(250); }
+    return token;
+  }
+  function ulangTurnstile() {
+    token = '';
+    if (widget !== null) window.turnstile?.reset(widget);
+  }
 
   // --- Membaca dan mengisi jawaban -----------------------------------------
   const medan = (nama: string) => form.elements.namedItem(nama) as { value: string } | null;
@@ -108,7 +142,7 @@ function mulai(form: HTMLFormElement, { bahasa, alamat, teks }: Data) {
     tombolKembali.hidden = posisi === 0;
     tombolLanjut.textContent = langkah === 'ringkasan' ? f.kirim : f.lanjut;
     galatKirim.textContent = '';
-    if (langkah === 'ringkasan') isiRingkasan();
+    if (langkah === 'ringkasan') { isiRingkasan(); pasangTurnstile(); }
     if (fokus) {
       const el = layar.get(langkah)!;
       if (el.getBoundingClientRect().top < 0) form.scrollIntoView({ block: 'start' });
@@ -169,15 +203,20 @@ function mulai(form: HTMLFormElement, { bahasa, alamat, teks }: Data) {
     tombolLanjut.disabled = true;
     tombolKembali.disabled = true;
     tombolLanjut.textContent = f.mengirim;
+    galatKirim.textContent = '';
     try {
+      const t = await ambilToken();
+      if (!t) { galatKirim.textContent = g.verifikasi; return; }
       const res = await fetch(`${alamat}/kirim`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(h.data),
+        body: JSON.stringify({ ...h.data, turnstile: t, situsWeb: v('situsWeb') }),
       });
       if (res.ok) return selesai(h.data);
-      galatKirim.textContent = res.status === 429 ? g.terlaluSering : g.kirimGagal;
+      ulangTurnstile();
+      galatKirim.textContent = res.status === 429 ? g.terlaluSering : res.status === 403 ? g.verifikasi : g.kirimGagal;
     } catch {
+      ulangTurnstile();
       galatKirim.textContent = g.kirimGagal;
     } finally {
       tombolLanjut.disabled = false;

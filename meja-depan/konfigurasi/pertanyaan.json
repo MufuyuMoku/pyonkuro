@@ -1,15 +1,7 @@
 {
-  "batasPanjang": {
-    "pendek": 120,
-    "sedang": 500,
-    "panjang": 1500
-  },
+  "batasPanjang": { "pendek": 120, "sedang": 500, "panjang": 1500 },
   "jenis": {
-    "pertanyaan": {
-      "id": "Kamu mau dibuatkan apa?",
-      "en": "What would you like built?",
-      "ja": "何を作りたいですか？"
-    },
+    "pertanyaan": { "id": "Kamu mau dibuatkan apa?", "en": "What would you like built?", "ja": "何を作りたいですか？" },
     "pilihan": [
       { "id": "situs", "label": { "id": "Situs web", "en": "A website", "ja": "ウェブサイト" } },
       { "id": "toko", "label": { "id": "Toko online & transaksi", "en": "An online shop or transactions", "ja": "ネットショップ・決済" } },
@@ -24,6 +16,7 @@
         "id": "halaman",
         "tipe": "pilihan",
         "wajib": true,
+        "labelLaporan": "Jumlah halaman",
         "pertanyaan": { "id": "Kira-kira berapa halaman?", "en": "Roughly how many pages?", "ja": "ページ数はどのくらいですか？" },
         "pilihan": [
           { "id": "1-3", "label": { "id": "1–3 halaman", "en": "1–3 pages", "ja": "1〜3ページ" } },
@@ -36,6 +29,7 @@
         "id": "ubahIsi",
         "tipe": "pilihan",
         "wajib": true,
+        "labelLaporan": "Pengubah isi",
         "pertanyaan": { "id": "Nanti isinya diubah siapa?", "en": "Who will update the content later?", "ja": "公開後の内容は誰が更新しますか？" },
         "pilihan": [
           { "id": "jarang", "label": { "id": "Jarang berubah, dibuatkan saja", "en": "It rarely changes, just build it", "ja": "ほとんど変わらないので、作ってもらえれば十分" } },
@@ -47,6 +41,7 @@
         "id": "login",
         "tipe": "pilihan",
         "wajib": true,
+        "labelLaporan": "Login pengunjung",
         "pertanyaan": { "id": "Pengunjung perlu punya akun atau login?", "en": "Do visitors need an account or login?", "ja": "訪問者のアカウントやログインは必要ですか？" },
         "pilihan": [
           { "id": "tidak", "label": { "id": "Tidak", "en": "No", "ja": "不要" } },
@@ -60,6 +55,7 @@
         "id": "produk",
         "tipe": "pilihan",
         "wajib": true,
+        "labelLaporan": "Jumlah produk",
         "pertanyaan": { "id": "Kira-kira ada berapa jenis produk?", "en": "Roughly how many products?", "ja": "商品の種類はどのくらいですか？" },
         "pilihan": [
           { "id": "kurang-20", "label": { "id": "Kurang dari 20", "en": "Fewer than 20", "ja": "20未満" } },
@@ -72,10 +68,14 @@
         "id": "bayar",
         "tipe": "pilihan",
         "wajib": true,
+        "labelLaporan": "Bayar online",
         "pertanyaan": { "id": "Perlu pembayaran online (mis. QRIS)?", "en": "Do you need online payment (e.g. QRIS)?", "ja": "オンライン決済（QRIS など）は必要ですか？" },
         "pilihan": [
           { "id": "ya", "label": { "id": "Ya, pembeli langsung bayar di situs", "en": "Yes, buyers pay on the site", "ja": "はい、サイト上で支払ってもらいたい" } },
-          { "id": "tidak", "label": { "id": "Tidak, cukup pesan lalu transfer atau bayar di tempat", "en": "No, they order and then pay by transfer or on delivery", "ja": "いいえ、注文後に振込や代引きで十分" } },
+          {
+            "id": "tidak",
+            "label": { "id": "Tidak, cukup pesan lalu transfer atau bayar di tempat", "en": "No, they order and then pay by transfer or on delivery", "ja": "いいえ、注文後に振込や代引きで十分" }
+          },
           { "id": "belum-tahu", "label": { "id": "Belum tahu", "en": "Not sure yet", "ja": "まだわからない" } }
         ]
       },
@@ -83,6 +83,7 @@
         "id": "pengurus",
         "tipe": "pilihan",
         "wajib": true,
+        "labelLaporan": "Pengurus pesanan",
         "pertanyaan": { "id": "Siapa yang mengurus pesanan?", "en": "Who handles the orders?", "ja": "注文は誰が管理しますか？" },
         "pilihan": [
           { "id": "sendiri", "label": { "id": "Saya sendiri", "en": "Just me", "ja": "自分ひとり" } },
@@ -96,6 +97,7 @@
         "id": "sistem",
         "tipe": "pilihan",
         "wajib": true,
+        "labelLaporan": "Sistem",
         "pertanyaan": { "id": "Dipakai di komputer apa?", "en": "Which computers will it run on?", "ja": "どのパソコンで使いますか？" },
         "pilihan": [
           { "id": "windows", "label": { "id": "Windows", "en": "Windows", "ja": "Windows" } },
@@ -108,6 +110,7 @@
         "id": "pengguna",
         "tipe": "pilihan",
         "wajib": true,
+        "labelLaporan": "Pemakai",
         "pertanyaan": { "id": "Siapa yang memakainya?", "en": "Who will use it?", "ja": "誰が使いますか？" },
         "pilihan": [
           { "id": "sendiri", "label": { "id": "Saya sendiri", "en": "Just me", "ja": "自分ひとり" } },
@@ -120,8 +123,13 @@
         "id": "pekerjaan",
         "tipe": "teks",
         "wajib": false,
+        "labelLaporan": "Pekerjaan utama",
         "pertanyaan": { "id": "Pekerjaan apa yang paling sering dilakukan dengan aplikasinya?", "en": "What will you do with the app most often?", "ja": "アプリで一番よく行う作業は何ですか？" },
-        "petunjuk": { "id": "Mis. mencatat stok harian, mencetak nota, mengelola daftar musik.", "en": "E.g. logging daily stock, printing receipts, managing a music library.", "ja": "例：毎日の在庫記録、レシートの印刷、音楽ライブラリの管理など。" }
+        "petunjuk": {
+          "id": "Mis. mencatat stok harian, mencetak nota, mengelola daftar musik.",
+          "en": "E.g. logging daily stock, printing receipts, managing a music library.",
+          "ja": "例：毎日の在庫記録、レシートの印刷、音楽ライブラリの管理など。"
+        }
       }
     ],
     "hp": [
@@ -129,6 +137,7 @@
         "id": "pemakai",
         "tipe": "pilihan",
         "wajib": true,
+        "labelLaporan": "Pemakai",
         "pertanyaan": { "id": "Siapa yang memakai aplikasinya?", "en": "Who will use the app?", "ja": "アプリは誰が使いますか？" },
         "pilihan": [
           { "id": "internal", "label": { "id": "Saya atau tim sendiri", "en": "Me or my own team", "ja": "自分やチーム内" } },
@@ -140,6 +149,7 @@
         "id": "akun",
         "tipe": "pilihan",
         "wajib": true,
+        "labelLaporan": "Akun pengguna",
         "pertanyaan": { "id": "Pemakai perlu punya akun atau login?", "en": "Do users need an account or login?", "ja": "利用者のアカウントやログインは必要ですか？" },
         "pilihan": [
           { "id": "tidak", "label": { "id": "Tidak", "en": "No", "ja": "不要" } },
@@ -151,6 +161,7 @@
         "id": "luring",
         "tipe": "pilihan",
         "wajib": true,
+        "labelLaporan": "Tanpa internet",
         "pertanyaan": { "id": "Perlu tetap bisa dipakai tanpa internet?", "en": "Does it need to work without internet?", "ja": "インターネットなしでも使える必要がありますか？" },
         "pilihan": [
           { "id": "ya", "label": { "id": "Ya", "en": "Yes", "ja": "はい" } },
@@ -164,8 +175,13 @@
         "id": "bayangan",
         "tipe": "teks",
         "wajib": true,
+        "labelLaporan": "Gambaran",
         "pertanyaan": { "id": "Ceritakan sedikit apa yang kamu bayangkan.", "en": "Tell me a little about what you have in mind.", "ja": "思い描いているものを少し教えてください。" },
-        "petunjuk": { "id": "Tidak perlu istilah teknis. Mis. \"alat untuk mencatat jadwal les murid\".", "en": "No technical terms needed. E.g. \"a tool to keep track of my students' lesson schedule\".", "ja": "専門用語は不要です。例：「生徒のレッスン日程を管理する道具」。" }
+        "petunjuk": {
+          "id": "Tidak perlu istilah teknis. Mis. \"alat untuk mencatat jadwal les murid\".",
+          "en": "No technical terms needed. E.g. \"a tool to keep track of my students' lesson schedule\".",
+          "ja": "専門用語は不要です。例：「生徒のレッスン日程を管理する道具」。"
+        }
       }
     ]
   },

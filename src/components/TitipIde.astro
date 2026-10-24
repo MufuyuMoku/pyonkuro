@@ -4,7 +4,7 @@
 import Kerangka from './Kerangka.astro';
 import { JALUR, type Bahasa } from '../lib/teks';
 import { JALUR_TITIP, TEKS_TITIP } from '../lib/teks-titip';
-import { ALAMAT_WORKER, TITIP_AKTIF } from '../lib/meja-depan';
+import { ALAMAT_WORKER, TITIP_AKTIF, TURNSTILE_SITE_KEY } from '../lib/meja-depan';
 import { PERTANYAAN, batasMedan, type DaftarPilihan } from '../../meja-depan/src/formulir';
 
 interface Props { bahasa: Bahasa }
@@ -19,11 +19,12 @@ const lanjutan = Object.entries(PERTANYAAN.lanjutan).flatMap(([jenis, daftar]) =
 const pilihan = (nama: string, d: Pick<DaftarPilihan, 'pilihan'>) => d.pilihan.map((p) => ({ nama, id: p.id, label: p.label[bahasa] }));
 
 // Data untuk skrip di browser. "<" di-escape supaya isi JSON tidak bisa menutup tag <script>.
-const data = JSON.stringify({ bahasa, alamat: ALAMAT_WORKER, beranda, teks: { formulir: f, galat: t.galat, terima: t.terima } }).replace(/</g, '\\u003c');
+const data = JSON.stringify({ bahasa, alamat: ALAMAT_WORKER, turnstile: TURNSTILE_SITE_KEY, beranda, teks: { formulir: f, galat: t.galat, terima: t.terima } }).replace(/</g, '\\u003c');
 ---
 
 <Kerangka bahasa={bahasa} judul={t.judulTab} deskripsi={t.deskripsi} jalur={JALUR_TITIP}>
   {!TITIP_AKTIF && <meta slot="kepala" name="robots" content="noindex" />}
+  {TITIP_AKTIF && <script slot="kepala" is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>}
   <section class="titip" aria-labelledby="judul-titip">
     <p class="judul-bagian"><svg viewBox="0 0 512 512" aria-hidden="true"><use href="#pyonkuro" /></svg>{t.label}</p>
     <h1 id="judul-titip" class="titip__judul">{t.judul}</h1>
@@ -141,8 +142,14 @@ const data = JSON.stringify({ bahasa, alamat: ALAMAT_WORKER, beranda, teks: { fo
             <h2 class="layar__tanya" tabindex="-1">{f.ringkasan.tanya}</h2>
             <p class="layar__petunjuk">{f.ringkasan.petunjuk}</p>
             <dl class="ringkasan" id="ringkasan-isi"></dl>
+            <div id="turnstile" class="titip__turnstile"></div>
             <p class="titip__privasi">{t.privasi}</p>
             <p class="layar__galat" id="galat-kirim" role="alert"></p>
+          </div>
+
+          <div class="jebakan" aria-hidden="true">
+            <label for="m-situsWeb">Situs web</label>
+            <input id="m-situsWeb" name="situsWeb" type="text" tabindex="-1" autocomplete="off" />
           </div>
 
           <div class="formulir__nav">
